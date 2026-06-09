@@ -24,6 +24,7 @@ const allTours = [
     dates: '15–22 июня 2026',
     price: '€1 290',
     difficulty: 'Средняя',
+    image: '/tours/tour-dolomites.png',
   },
   {
     slug: 'norway-july-2026',
@@ -31,6 +32,7 @@ const allTours = [
     dates: '5–12 июля 2026',
     price: '€1 490',
     difficulty: 'Высокая',
+    image: '/tours/tour-norway.png',
   },
   {
     slug: 'pyrenees-august-2026',
@@ -38,6 +40,7 @@ const allTours = [
     dates: '20–28 августа 2026',
     price: '€1 190',
     difficulty: 'Средняя',
+    image: '/tours/tour-pyrenees.png',
   },
   {
     slug: 'alps-september-2026',

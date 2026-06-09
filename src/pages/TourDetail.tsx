@@ -13,6 +13,7 @@ const tourData: Record<
     dates: string;
     price: string;
     difficulty: string;
+    image?: string;
     duration: string;
     groupSize: string;
     accommodation: string;
@@ -27,6 +28,7 @@ const tourData: Record<
     dates: '15–22 июня 2026',
     price: '€1 290',
     difficulty: 'Средняя',
+    image: '/tours/tour-dolomites.png',
     duration: '8 дней / 7 ночей',
     groupSize: '8–14 человек',
     accommodation: 'Горные хижины',
@@ -61,6 +63,7 @@ const tourData: Record<
     dates: '5–12 июля 2026',
     price: '€1 490',
     difficulty: 'Высокая',
+    image: '/tours/tour-norway.png',
     duration: '8 дней / 7 ночей',
     groupSize: '6–10 человек',
     accommodation: 'Палатки и хижины',
@@ -95,6 +98,7 @@ const tourData: Record<
     dates: '20–28 августа 2026',
     price: '€1 190',
     difficulty: 'Средняя',
+    image: '/tours/tour-pyrenees.png',
     duration: '9 дней / 8 ночей',
     groupSize: '8–12 человек',
     accommodation: 'Горные приюты',
@@ -221,10 +225,14 @@ export default function TourDetail() {
     <div className="bg-background pb-24 md:pb-0">
       {/* Hero */}
       <div className="relative h-72 md:h-[28rem] bg-accent/30 flex items-end">
-        <div className="absolute inset-0 bg-primary/10" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-primary/30 text-sm font-medium">Изображение тура</span>
-        </div>
+        {tour.image ? (
+          <img src={tour.image} alt={tour.name} className="absolute inset-0 w-full h-full object-cover" />
+        ) : (
+          <div className="absolute inset-0 bg-primary/10 flex items-center justify-center">
+            <span className="text-primary/30 text-sm font-medium">Изображение тура</span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-6 md:pb-10">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className="bg-primary text-background text-xs font-medium px-3 py-1 rounded-full">
@@ -234,7 +242,7 @@ export default function TourDetail() {
               {tour.price}
             </span>
           </div>
-          <h1 className="font-heading text-2xl md:text-4xl font-bold text-primary">
+          <h1 className="font-heading text-2xl md:text-4xl font-bold text-background">
             {tour.name}
           </h1>
         </div>
