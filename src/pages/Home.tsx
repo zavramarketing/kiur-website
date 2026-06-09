@@ -164,14 +164,17 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="bg-background py-16 md:py-24 text-center">
+      <section className="bg-background pt-8 pb-16 md:pt-10 md:pb-24 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center">
-            <img
-              src="/mascot/kiur-horizon.png"
-              alt="KIUR horizon"
-              className="max-w-[380px] w-full object-contain mb-6"
-            />
+            <div className="relative max-w-[380px] w-full mb-6">
+              <img
+                src="/mascot/kiur-horizon.png"
+                alt="KIUR horizon"
+                className="w-full object-contain"
+              />
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#F5F0E8] to-transparent" />
+            </div>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary mb-6">
               Есть вопросы?
             </h2>
