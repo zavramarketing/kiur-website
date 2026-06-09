@@ -11,9 +11,8 @@ export default function Footer() {
     <footer className="bg-primary text-background py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <Link to="/" className="flex items-center gap-2 font-heading font-bold text-xl">
-            <img src="/logo.png" alt="KIUR" className="w-8 h-8 object-contain" />
-            KIUR
+          <Link to="/" className="flex items-center">
+            <img src="/logo.png" alt="KIUR" className="h-8 w-auto object-contain brightness-0 invert" />
           </Link>
 
           <div className="flex items-center gap-6">
