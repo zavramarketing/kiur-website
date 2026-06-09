@@ -78,14 +78,14 @@ export default function Home() {
           <img
             src="/mascot/kiur-map.png"
             alt="KIUR with map"
-            className="hidden md:block absolute bottom-0 right-[-60px] w-[600px] object-contain translate-y-[60%] z-10"
+            className="hidden md:block absolute bottom-0 right-[-60px] w-[600px] object-contain translate-y-[15%] z-10"
           />
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-primary to-transparent pointer-events-none" />
       </section>
 
       {/* About */}
-      <section className="bg-background pt-80 pb-0 md:pt-96 overflow-visible">
+      <section className="bg-background pt-32 pb-0 md:pt-40 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-end">
             <div className="pb-12 md:pb-16 self-center">
