@@ -85,9 +85,16 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section className="bg-background pt-32 pb-0 md:pt-40 overflow-visible">
+      <section className="bg-background pt-24 pb-0 md:pt-28 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-end">
+            <div className="flex items-end justify-start">
+              <img
+                src="/mascot/kiur-hiking.png"
+                alt="KIUR mascot"
+                className="w-[460px] max-w-full object-contain mb-[-60px] relative z-10"
+              />
+            </div>
             <div className="pb-12 md:pb-16 self-center">
               <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary mb-6">
                 О KIUR
@@ -100,13 +107,6 @@ export default function Home() {
                   Мы полностью берём на себя организацию: подбираем комфортное жилье, находим опытных гидов и продумываем логистику. Вам не нужно беспокоиться о деталях — вы просто идёте, дышите свежим воздухом и наслаждаетесь моментом в хорошей компании.
                 </p>
               </div>
-            </div>
-            <div className="flex items-end justify-end">
-              <img
-                src="/mascot/kiur-hiking.png"
-                alt="KIUR mascot"
-                className="w-[520px] max-w-full object-contain mb-[-60px] relative z-10"
-              />
             </div>
           </div>
         </div>
