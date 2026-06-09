@@ -48,29 +48,38 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-primary text-background py-20 md:py-32">
+      <section className="bg-primary text-background py-20 md:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <h1 className="font-heading text-4xl md:text-6xl font-bold leading-tight mb-6">
-              Пешие путешествия по самым красивым местам Европы
-            </h1>
-            <p className="text-lg md:text-xl text-background/80 mb-10 max-w-xl">
-              Собираем русскоязычные группы, берём на себя всю логистику и показываем природу, от которой захватывает дух.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                to="/tours"
-                className="inline-flex items-center gap-2 bg-background text-primary px-7 py-3 rounded-full font-medium hover:bg-white transition-colors"
-              >
-                Смотреть туры
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                to="/contacts"
-                className="inline-flex items-center gap-2 border border-background/40 text-background px-7 py-3 rounded-full font-medium hover:bg-background/10 transition-colors"
-              >
-                О проекте
-              </Link>
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h1 className="font-heading text-4xl md:text-6xl font-bold leading-tight mb-6">
+                Пешие путешествия по самым красивым местам Европы
+              </h1>
+              <p className="text-lg md:text-xl text-background/80 mb-10 max-w-xl">
+                Собираем русскоязычные группы, берём на себя всю логистику и показываем природу, от которой захватывает дух.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/tours"
+                  className="inline-flex items-center gap-2 bg-background text-primary px-7 py-3 rounded-full font-medium hover:bg-white transition-colors"
+                >
+                  Смотреть туры
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  to="/contacts"
+                  className="inline-flex items-center gap-2 border border-background/40 text-background px-7 py-3 rounded-full font-medium hover:bg-background/10 transition-colors"
+                >
+                  О проекте
+                </Link>
+              </div>
+            </div>
+            <div className="hidden md:flex items-end justify-end">
+              <img
+                src="/mascot/kiur-map.png"
+                alt="KIUR with map"
+                className="w-[460px] object-contain"
+              />
             </div>
           </div>
         </div>
