@@ -49,10 +49,10 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="relative bg-primary text-background pt-16 pb-0 md:pt-28 overflow-visible">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-[3fr_2fr] gap-4 items-end">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="max-w-[55%]">
             <div className="pb-20 md:pb-36">
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-[56px] font-bold leading-tight mb-6 max-w-2xl">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-[56px] font-bold leading-tight mb-6">
                 Пешие путешествия по самым красивым местам Европы
               </h1>
               <p className="text-lg md:text-xl text-background/80 mb-10 max-w-lg">
@@ -74,20 +74,18 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <div className="hidden md:flex items-end justify-end">
-              <img
-                src="/mascot/kiur-map.png"
-                alt="KIUR with map"
-                className="w-[960px] object-contain mb-[-280px] relative z-10"
-              />
-            </div>
           </div>
+          <img
+            src="/mascot/kiur-map.png"
+            alt="KIUR with map"
+            className="hidden md:block absolute bottom-0 right-[-60px] w-[600px] object-contain translate-y-[60%] z-10"
+          />
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-primary to-transparent pointer-events-none" />
       </section>
 
       {/* About */}
-      <section className="bg-background pt-64 pb-0 md:pt-72 overflow-visible">
+      <section className="bg-background pt-80 pb-0 md:pt-96 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-end">
             <div className="pb-12 md:pb-16 self-center">
