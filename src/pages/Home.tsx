@@ -48,14 +48,14 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative bg-primary text-background pt-20 pb-0 md:pt-32 overflow-visible">
+      <section className="relative bg-primary text-background pt-16 pb-0 md:pt-28 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8 items-end">
-            <div className="pb-20 md:pb-32">
-              <h1 className="font-heading text-4xl md:text-6xl font-bold leading-tight mb-6">
+          <div className="grid md:grid-cols-[3fr_2fr] gap-4 items-end">
+            <div className="pb-20 md:pb-36">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-[56px] font-bold leading-tight mb-6 max-w-2xl">
                 Пешие путешествия по самым красивым местам Европы
               </h1>
-              <p className="text-lg md:text-xl text-background/80 mb-10 max-w-xl">
+              <p className="text-lg md:text-xl text-background/80 mb-10 max-w-lg">
                 Собираем русскоязычные группы, берём на себя всю логистику и показываем природу, от которой захватывает дух.
               </p>
               <div className="flex flex-wrap gap-4">
@@ -78,16 +78,16 @@ export default function Home() {
               <img
                 src="/mascot/kiur-map.png"
                 alt="KIUR with map"
-                className="w-[680px] object-contain mb-[-140px] relative z-10"
+                className="w-[780px] object-contain mb-[-180px] relative z-10"
               />
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-primary to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-primary to-transparent pointer-events-none" />
       </section>
 
       {/* About */}
-      <section className="bg-background pt-40 pb-0 md:pt-48 overflow-visible">
+      <section className="bg-background pt-48 pb-0 md:pt-56 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-end">
             <div className="pb-12 md:pb-16 self-center">
