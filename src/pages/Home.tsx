@@ -170,7 +170,7 @@ export default function Home() {
             <img
               src="/mascot/kiur-horizon.png"
               alt="KIUR horizon"
-              className="max-w-[300px] w-full object-contain mb-6"
+              className="max-w-[380px] w-full object-contain mb-6"
             />
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary mb-6">
               Есть вопросы?
