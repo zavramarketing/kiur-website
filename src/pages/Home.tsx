@@ -29,18 +29,18 @@ const upcomingTours = [
 const steps = [
   {
     icon: '/icons/icon-compass.png',
-    title: 'Выбери маршрут',
-    desc: 'Изучи наши треккинг-туры по самым живописным уголкам Европы.',
+    title: 'Выбираете маршрут',
+    desc: 'Посмотрите наши туры по пейзажным местам Европы и найдите то, что вам ближе всего по настроению и уровню нагрузки.',
   },
   {
     icon: '/icons/icon-calendar.png',
-    title: 'Забронируй место',
-    desc: 'Оставь заявку — мы свяжемся и поможем с выбором и оплатой.',
+    title: 'Бронируете место',
+    desc: 'Оставьте заявку на сайте. Мы свяжемся с вами, ответим на вопросы и поможем оформить бронирование.',
   },
   {
     icon: '/icons/icon-peaks.png',
-    title: 'Просто иди',
-    desc: 'Приезжай, а мы позаботимся обо всём остальном: жильё, маршрут, поддержка.',
+    title: 'Приезжаете и отдыхаете',
+    desc: 'Мы берем на себя проживание, маршруты и сопровождение. Вы просто наслаждаетесь путешествием.',
   },
 ];
 
@@ -52,10 +52,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <h1 className="font-heading text-4xl md:text-6xl font-bold leading-tight mb-6">
-              Пока другие планируют — наши уже идут
+              Пешие путешествия по самым красивым местам Европы
             </h1>
             <p className="text-lg md:text-xl text-background/80 mb-10 max-w-xl">
-              Трекинг-туры для русскоязычных в Европе
+              Собираем русскоязычные группы, берём на себя всю логистику и показываем природу, от которой захватывает дух.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
@@ -69,7 +69,7 @@ export default function Home() {
                 to="/contacts"
                 className="inline-flex items-center gap-2 border border-background/40 text-background px-7 py-3 rounded-full font-medium hover:bg-background/10 transition-colors"
               >
-                О нас
+                О проекте
               </Link>
             </div>
           </div>
@@ -86,13 +86,10 @@ export default function Home() {
               </h2>
               <div className="space-y-4 text-primary/80 leading-relaxed">
                 <p>
-                  Мы организуем трекинг-туры по горам Европы для русскоязычных путешественников. Наши маршруты проходят через самые живописные места — от Доломитовых Альп до Норвежских фьордов.
+                  Мы создаем трекинг-туры для тех, кто хочет увидеть Европу с нового ракурса. Наши маршруты проходят через самые живописные природные локации: от космических пейзажей Норвегии и Доломитовых Альп до цветущих долин и уютных троп Пиренеев.
                 </p>
                 <p>
-                  Каждый тур продуман до мелочей: комфортное размещение, опытные гиды, поддержка на всём пути. Тебе остаётся только идти и наслаждаться видами.
-                </p>
-                <p>
-                  Присоединяйся к сообществу тех, кто не ждёт «подходящего момента», а просто берёт и идёт.
+                  Мы полностью берём на себя организацию: подбираем комфортное жилье, находим опытных гидов и продумываем логистику. Вам не нужно беспокоиться о деталях — вы просто идёте, дышите свежим воздухом и наслаждаетесь моментом в хорошей компании.
                 </p>
               </div>
             </div>
@@ -144,7 +141,7 @@ export default function Home() {
       <section className="bg-primary text-background py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-center mb-14">
-            Как это работает
+            Как всё устроено
           </h2>
           <div className="grid md:grid-cols-3 gap-10">
             {steps.map((step, i) => (
@@ -176,10 +173,10 @@ export default function Home() {
               <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#F5F0E8] to-transparent" />
             </div>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary mb-6">
-              Есть вопросы?
+              Остались вопросы?
             </h2>
             <p className="text-primary/60 mb-8 max-w-md mx-auto">
-              Напиши нам в Telegram — ответим быстро и поможем выбрать подходящий тур.
+              Напишите нам в Telegram. Мы на связи, чтобы быстро подсказать детали по снаряжению, сложности или помочь выбрать подходящий тур.
             </p>
             <a
               href="https://t.me/kiur_tours"
