@@ -66,12 +66,12 @@ export default function Home() {
                   Смотреть туры
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link
-                  to="/contacts"
+                <a
+                  href="#about"
                   className="inline-flex items-center gap-2 border border-background/40 text-background px-7 py-3 rounded-full font-medium hover:bg-background/10 transition-colors"
                 >
-                  О проекте
-                </Link>
+                  О нас
+                </a>
               </div>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section className="bg-background pt-24 pb-0 md:pt-28 overflow-visible">
+      <section id="about" className="bg-background pt-24 pb-0 md:pt-28 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-end">
             <div className="flex items-end justify-start">
