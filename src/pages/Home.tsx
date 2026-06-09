@@ -77,10 +77,10 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section className="bg-background py-16 md:py-24">
+      <section className="bg-background pt-10 pb-0 md:pt-14 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+          <div className="grid md:grid-cols-2 gap-8 items-end">
+            <div className="pb-12 md:pb-16">
               <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary mb-6">
                 О KIUR
               </h2>
@@ -96,11 +96,11 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex items-end justify-end">
               <img
                 src="/mascot/kiur-hiking.png"
                 alt="KIUR mascot"
-                className="max-w-[420px] w-full object-contain"
+                className="w-[520px] max-w-full object-contain mb-[-60px] relative z-10"
               />
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function Home() {
       </section>
 
       {/* Tours */}
-      <section className="bg-background py-16 md:py-24 border-t border-primary/5">
+      <section className="bg-background pt-24 pb-16 md:pt-28 md:pb-24 border-t border-primary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-10">
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary">
