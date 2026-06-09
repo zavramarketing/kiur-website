@@ -48,6 +48,7 @@ const allTours = [
     dates: '10–17 сентября 2026',
     price: '€1 390',
     difficulty: 'Средняя',
+    image: '/tours/tour-alps.png',
   },
   {
     slug: 'corsica-october-2026',
@@ -55,6 +56,7 @@ const allTours = [
     dates: '1–8 октября 2026',
     price: '€1 090',
     difficulty: 'Низкая',
+    image: '/tours/tour-corsica.png',
   },
 ];
 
