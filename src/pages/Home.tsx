@@ -80,7 +80,7 @@ export default function Home() {
       <section className="bg-background pt-10 pb-0 md:pt-14 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-end">
-            <div className="pb-12 md:pb-16">
+            <div className="pb-12 md:pb-16 self-center">
               <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary mb-6">
                 О KIUR
               </h2>
