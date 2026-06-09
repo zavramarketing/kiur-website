@@ -78,7 +78,7 @@ export default function Home() {
               <img
                 src="/mascot/kiur-map.png"
                 alt="KIUR with map"
-                className="w-[780px] object-contain mb-[-180px] relative z-10"
+                className="w-[960px] object-contain mb-[-280px] relative z-10"
               />
             </div>
           </div>
@@ -87,7 +87,7 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section className="bg-background pt-48 pb-0 md:pt-56 overflow-visible">
+      <section className="bg-background pt-64 pb-0 md:pt-72 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-end">
             <div className="pb-12 md:pb-16 self-center">
