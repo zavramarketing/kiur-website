@@ -98,9 +98,9 @@ export default function Home() {
             </div>
             <div className="flex items-center justify-center">
               <img
-                src="/mascot/kiur-horizon.png"
+                src="/mascot/kiur-hiking.png"
                 alt="KIUR mascot"
-                className="max-w-[300px] w-full object-contain"
+                className="max-w-[420px] w-full object-contain"
               />
             </div>
           </div>
@@ -168,8 +168,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center">
             <img
-              src="/mascot/kiur-summit.png"
-              alt="KIUR summit"
+              src="/mascot/kiur-horizon.png"
+              alt="KIUR horizon"
               className="max-w-[300px] w-full object-contain mb-6"
             />
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary mb-6">
