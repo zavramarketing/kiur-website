@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Tours from './pages/Tours';
 import TourDetail from './pages/TourDetail';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Contacts from './pages/Contacts';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/tours" element={<Tours />} />
           <Route path="/tours/:slug" element={<TourDetail />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contacts" element={<Contacts />} />
         </Routes>
       </main>

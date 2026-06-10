@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { CalendarDays } from 'lucide-react';
 
 const articles = [
@@ -55,8 +56,9 @@ export default function Blog() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article) => (
-            <article
+            <Link
               key={article.slug}
+              to={`/blog/${article.slug}`}
               className="bg-background border border-primary/10 rounded-card overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col"
             >
               <div className="h-48 bg-accent/30 flex items-center justify-center">
@@ -74,7 +76,7 @@ export default function Blog() {
                   {article.excerpt}
                 </p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>
