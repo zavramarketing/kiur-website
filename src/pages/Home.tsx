@@ -177,8 +177,8 @@ export default function Home() {
           <div className="flex flex-col items-center">
             <div className="relative max-w-[380px] w-full mb-6">
               <img
-                src="/mascot/kiur-horizon.png"
-                alt="KIUR horizon"
+                src="/mascot/kiur-phone.png"
+                alt="KIUR phone"
                 className="w-full object-contain"
               />
               <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#F5F0E8] to-transparent" />
