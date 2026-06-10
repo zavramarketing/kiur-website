@@ -53,7 +53,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative bg-primary text-background pt-12 pb-0 md:pt-28 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="md:max-w-[55%]">
+          <div className="md:max-w-[55%] relative z-10">
             <div className="pb-14 md:pb-36">
               <h1 className="font-heading text-3xl md:text-5xl lg:text-[56px] font-bold leading-tight mb-4 md:mb-6">
                 Пешие путешествия по самым красивым местам Европы
