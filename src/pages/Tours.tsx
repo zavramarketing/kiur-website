@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import TourCard from '../components/TourCard';
 
 const months = [
@@ -70,6 +71,14 @@ export default function Tours() {
 
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)] py-12 md:py-20">
+      <Helmet>
+        <title>Все туры — KIUR</title>
+        <meta name="description" content="Треккинг-туры по Европе: Доломиты, Норвегия, Пиренеи, Швейцарские Альпы, Корсика. Выберите маршрут и забронируйте место." />
+        <meta property="og:title" content="Все туры — KIUR" />
+        <meta property="og:description" content="Треккинг-туры по Европе: Доломиты, Норвегия, Пиренеи, Швейцарские Альпы, Корсика." />
+        <meta property="og:url" content="https://kiurtours.eu/tours" />
+        <link rel="canonical" href="https://kiurtours.eu/tours" />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-8">
           Все туры

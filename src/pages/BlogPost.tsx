@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { CalendarDays, ArrowLeft } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const posts: Record<string, { title: string; date: string; content: { type: 'p' | 'h2' | 'ul'; text?: string; items?: string[] }[] }> = {
   'what-to-pack': {
@@ -200,6 +201,13 @@ export default function BlogPost() {
 
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)] py-10 md:py-16">
+      <Helmet>
+        <title>{post.title} — KIUR</title>
+        <meta name="description" content={post.content.find(b => b.type === 'p')?.text?.slice(0, 155)} />
+        <meta property="og:title" content={`${post.title} — KIUR`} />
+        <meta property="og:url" content={`https://kiurtours.eu/blog/${slug}`} />
+        <link rel="canonical" href={`https://kiurtours.eu/blog/${slug}`} />
+      </Helmet>
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           to="/blog"

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Send, MessageCircle, Instagram, Mail, Check } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const contactBlocks = [
   {
@@ -37,6 +38,13 @@ export default function Contacts() {
 
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)] py-12 md:py-20">
+      <Helmet>
+        <title>Контакты — KIUR</title>
+        <meta name="description" content="Свяжитесь с командой KIUR: Telegram, Instagram, Email. Ответим на вопросы о турах и поможем с бронированием." />
+        <meta property="og:title" content="Контакты — KIUR" />
+        <meta property="og:url" content="https://kiurtours.eu/contacts" />
+        <link rel="canonical" href="https://kiurtours.eu/contacts" />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-10">
           Контакты

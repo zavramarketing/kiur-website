@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  ChevronDown,
-  Check,
-  X,
-} from 'lucide-react';
+import { ChevronDown, Check, X } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const tourData: Record<
   string,
@@ -225,6 +222,14 @@ export default function TourDetail() {
 
   return (
     <div className="bg-background pb-24 md:pb-0">
+      <Helmet>
+        <title>{tour.name} — KIUR</title>
+        <meta name="description" content={`${tour.name}, ${tour.dates}. ${tour.duration}, группа ${tour.groupSize}. Стоимость ${tour.price}. Треккинг-тур с KIUR.`} />
+        <meta property="og:title" content={`${tour.name} — KIUR`} />
+        <meta property="og:description" content={`${tour.name}, ${tour.dates}. ${tour.duration}. Стоимость ${tour.price}.`} />
+        <meta property="og:url" content={`https://kiurtours.eu/tours/${slug}`} />
+        <link rel="canonical" href={`https://kiurtours.eu/tours/${slug}`} />
+      </Helmet>
       {/* Hero */}
       <div className="relative h-72 md:h-[28rem] bg-accent/30 flex items-end">
         {tour.image ? (

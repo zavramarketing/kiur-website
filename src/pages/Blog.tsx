@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CalendarDays } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const articles = [
   {
@@ -49,6 +50,14 @@ const articles = [
 export default function Blog() {
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)] py-12 md:py-20">
+      <Helmet>
+        <title>Блог о треккинге — KIUR</title>
+        <meta name="description" content="Статьи о треккинге в Европе: советы по снаряжению, гиды по маршрутам, питание в горах и многое другое." />
+        <meta property="og:title" content="Блог о треккинге — KIUR" />
+        <meta property="og:description" content="Статьи о треккинге в Европе: советы по снаряжению, гиды по маршрутам, питание в горах." />
+        <meta property="og:url" content="https://kiurtours.eu/blog" />
+        <link rel="canonical" href="https://kiurtours.eu/blog" />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-10">
           Блог

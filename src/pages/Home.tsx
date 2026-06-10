@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import TourCard from '../components/TourCard';
 
 const upcomingTours = [
@@ -50,6 +51,14 @@ const steps = [
 export default function Home() {
   return (
     <div>
+      <Helmet>
+        <title>KIUR — Пешие треккинг-туры по Европе</title>
+        <meta name="description" content="Организованные треккинг-туры по самым красивым местам Европы: Доломиты, Норвегия, Пиренеи, Альпы, Корсика. Русскоязычные группы, всё включено." />
+        <meta property="og:title" content="KIUR — Пешие треккинг-туры по Европе" />
+        <meta property="og:description" content="Организованные треккинг-туры по самым красивым местам Европы. Русскоязычные группы, всё включено." />
+        <meta property="og:url" content="https://kiurtours.eu" />
+        <link rel="canonical" href="https://kiurtours.eu" />
+      </Helmet>
       {/* Hero */}
       <section className="relative bg-primary text-background pt-12 pb-0 md:pt-28 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
