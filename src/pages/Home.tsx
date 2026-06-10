@@ -51,17 +51,17 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative bg-primary text-background pt-16 pb-0 md:pt-28 overflow-visible">
+      <section className="relative bg-primary text-background pt-12 pb-0 md:pt-28 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="max-w-[55%]">
-            <div className="pb-20 md:pb-36">
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-[56px] font-bold leading-tight mb-6">
+          <div className="md:max-w-[55%]">
+            <div className="pb-14 md:pb-36">
+              <h1 className="font-heading text-3xl md:text-5xl lg:text-[56px] font-bold leading-tight mb-4 md:mb-6">
                 Пешие путешествия по самым красивым местам Европы
               </h1>
-              <p className="text-lg md:text-xl text-background/80 mb-10 max-w-lg">
+              <p className="text-base md:text-xl text-background/80 mb-8 md:mb-10 max-w-lg">
                 Собираем русскоязычные группы, берём на себя всю логистику и показываем природу, от которой захватывает дух.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 <Link
                   to="/tours"
                   className="inline-flex items-center gap-2 bg-background text-primary px-7 py-3 rounded-full font-medium hover:bg-white transition-colors"
@@ -88,14 +88,14 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section id="about" className="bg-background pt-24 pb-0 md:pt-28 overflow-visible">
+      <section id="about" className="bg-background pt-14 pb-0 md:pt-28 overflow-visible">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-end">
-            <div className="flex items-end justify-start">
+            <div className="flex items-end justify-center md:justify-start">
               <img
                 src="/mascot/kiur-hiking.png"
                 alt="KIUR mascot"
-                className="w-[460px] max-w-full object-contain mb-[-60px] relative z-10"
+                className="w-[260px] md:w-[460px] object-contain mb-[-40px] md:mb-[-60px] relative z-10"
               />
             </div>
             <div className="pb-12 md:pb-16 self-center">
@@ -149,12 +149,12 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="bg-primary text-background py-16 md:py-24">
+      <section className="bg-primary text-background py-12 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-center mb-14">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-center mb-10 md:mb-14">
             Как всё устроено
           </h2>
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-3 gap-8 md:gap-10">
             {steps.map((step, i) => (
               <div key={i} className="text-center">
                 <div className="w-14 h-14 mx-auto mb-5 bg-background/10 rounded-full flex items-center justify-center">
@@ -175,7 +175,7 @@ export default function Home() {
       <section className="bg-background pt-8 pb-16 md:pt-10 md:pb-24 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center">
-            <div className="relative max-w-[380px] w-full mb-6">
+            <div className="relative max-w-[240px] md:max-w-[380px] w-full mb-4 md:mb-6">
               <img
                 src="/mascot/kiur-phone.png"
                 alt="KIUR phone"
