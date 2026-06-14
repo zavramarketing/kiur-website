@@ -1,204 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ChevronDown, Check, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
-const tourData: Record<
-  string,
-  {
-    name: string;
-    dates: string;
-    price: string;
-    difficulty: string;
-    image?: string;
-    duration: string;
-    groupSize: string;
-    accommodation: string;
-    season: string;
-    program: { day: number; title: string; desc: string }[];
-    included: string[];
-    notIncluded: string[];
-  }
-> = {
-  'dolomites-june-2026': {
-    name: 'Доломитовые Альпы',
-    dates: '15–22 июня 2026',
-    price: '€1 290',
-    difficulty: 'Средняя',
-    image: '/tours/tour-dolomites.png',
-    duration: '8 дней / 7 ночей',
-    groupSize: '8–14 человек',
-    accommodation: 'Горные хижины',
-    season: 'июнь — сентябрь',
-    program: [
-      { day: 1, title: 'Прибытие в Кортину-д’Ампеццо', desc: 'Трансфер из аэропорта, размещение, знакомство с группой и гидом. Ужин в традиционном альпийском ресторане.' },
-      { day: 2, title: 'Трек к озеру Брайес', desc: 'Переход через лесные тропы к знаменитому озеру Брайес с его бирюзовой водой. Пикник на берегу, возвращение в хижину.' },
-      { day: 3, title: 'Восхождение на Тре-Чиме-ди-Л', desc: 'Классический маршрут вокруг трёх вершин. Панорамные виды, исторические укрепления Первой мировой войны.' },
-      { day: 4, title: 'Долина Фанес', desc: 'Переход через плато Фанес — одно из красивейших мест Доломитов. Высокогорные луга, известняковые стены.' },
-      { day: 5, title: 'Перевал Селла', desc: 'Маршрут через перевал Селла с видами на четыре долины. Спуск в деревню Валь-Гардена.' },
-      { day: 6, title: 'Сасс-Пордой', desc: 'Подъём на плато Сасс-Пордой фуникулёром, кольцевая прогулка по «лунному» ландшафту.' },
-      { day: 7, title: 'Последний день в горах', desc: 'Лёгкий трек к водопаду, обед в приюте, прощальный ужин с группой.' },
-      { day: 8, title: 'Отъезд', desc: 'Трансфер в аэропорт, прощание. Возвращение домой с воспоминаниями на всю жизнь.' },
-    ],
-    included: [
-      'Проживание в горных хижинах',
-      'Полный пансион (завтрак, обед, ужин)',
-      'Трансферы из/в аэропорт',
-      'Услуги профессионального гида',
-      'Групповое страхование',
-      'Карты маршрутов и GPS-треки',
-    ],
-    notIncluded: [
-      'Авиабилеты до Италии',
-      'Личные напитки',
-      'Личное страхование',
-      'Чаевые гиду (по желанию)',
-    ],
-  },
-  'norway-july-2026': {
-    name: 'Треккинг в Норвегии',
-    dates: '5–12 июля 2026',
-    price: '€1 490',
-    difficulty: 'Высокая',
-    image: '/tours/tour-norway.png',
-    duration: '8 дней / 7 ночей',
-    groupSize: '6–10 человек',
-    accommodation: 'Палатки и хижины',
-    season: 'июнь — август',
-    program: [
-      { day: 1, title: 'Прилёт в Ставангер', desc: 'Встреча в аэропорту, трансфер в базовый лагерь, инструктаж.' },
-      { day: 2, title: 'Восхождение на Кьераг', desc: 'Тяжёлый подъём к знаменитому камню Кьерагболтен. Виды на Люсе-фьорд.' },
-      { day: 3, title: 'Трек к Прекестулен', desc: 'Переход к скале Прекестулен — «Кафедра проповедника». Фото на краю утёса.' },
-      { day: 4, title: 'Долина Люсеботн', desc: 'Спуск в долину, купание в ледниковом озере, ночёвка в палатках.' },
-      { day: 5, title: 'Трек через хребет', desc: 'Переход через горный хребет с видами на фьорды. Дикая природа, олени.' },
-      { day: 6, title: 'Водопады и мосты', desc: 'Посещение водопадов, переход по подвесным мостам.' },
-      { day: 7, title: 'Возвращение к цивилизации', desc: 'Последний трек, трансфер в город, ужин в ресторане.' },
-      { day: 8, title: 'Отъезд', desc: 'Трансфер в аэропорт, прощание.' },
-    ],
-    included: [
-      'Проживание (палатки + хижины)',
-      'Все приёмы пищи на маршруте',
-      'Трансферы',
-      'Гид и техподдержка',
-      'Аренда палаток',
-      'Групповое страхование',
-    ],
-    notIncluded: [
-      'Авиабилеты',
-      'Личные напитки',
-      'Личное страхование',
-      'Чаевые',
-    ],
-  },
-  'pyrenees-august-2026': {
-    name: 'Пиренеи: Франция — Испания',
-    dates: '20–28 августа 2026',
-    price: '€1 190',
-    difficulty: 'Средняя',
-    image: '/tours/tour-pyrenees.png',
-    duration: '9 дней / 8 ночей',
-    groupSize: '8–12 человек',
-    accommodation: 'Горные приюты',
-    season: 'июнь — сентябрь',
-    program: [
-      { day: 1, title: 'Прибытие в Тулузу', desc: 'Встреча, трансфер в Пиренеи, размещение в приюте.' },
-      { day: 2, title: 'Долина Ордеса', desc: 'Трек через национальный парк Ордеса. Водопады, известняковые стены.' },
-      { day: 3, title: 'Перевал Портийе', desc: 'Переход через перевал с видами на обе стороны Пиренеев.' },
-      { day: 4, title: 'Озеро Гаубе', desc: 'Восхождение к озеру Гаубе — одному из красивейших в Пиренеях.' },
-      { day: 5, title: 'Горный хребет', desc: 'Кольцевой маршрут по хребту с панорамными видами.' },
-      { day: 6, title: 'Лесные деревни', desc: 'Спуск в традиционные баскские деревни, знакомство с культурой.' },
-      { day: 7, title: 'Последний трек', desc: 'Финальный маршрут, фотосессия, праздничный ужин.' },
-      { day: 8, title: 'Отдых и отъезд', desc: 'Свободное утро, трансфер в аэропорт.' },
-    ],
-    included: [
-      'Проживание в приютах',
-      'Полный пансион',
-      'Трансферы',
-      'Гид',
-      'Групповое страхование',
-    ],
-    notIncluded: [
-      'Авиабилеты',
-      'Личные напитки',
-      'Личное страхование',
-      'Чаевые',
-    ],
-  },
-  'alps-september-2026': {
-    name: 'Швейцарские Альпы',
-    dates: '10–17 сентября 2026',
-    price: '€1 390',
-    difficulty: 'Средняя',
-    image: '/tours/tour-alps.png',
-    duration: '8 дней / 7 ночей',
-    groupSize: '8–14 человек',
-    accommodation: 'Горные хижины',
-    season: 'июнь — октябрь',
-    program: [
-      { day: 1, title: 'Прибытие в Цюрих', desc: 'Встреча, трансфер в Интерлакен, размещение.' },
-      { day: 2, title: 'Озёра Бриенц и Тун', desc: 'Трек вдоль озёр с видами на Юнгфрау.' },
-      { day: 3, title: 'Долина Лаутербруннен', desc: 'Переход через долину с 72 водопадами.' },
-      { day: 4, title: 'Восхождение на Шильтхорн', desc: 'Подъём на вершину, панорамные виды.' },
-      { day: 5, title: 'Ледник Алеч', desc: 'Посещение ледника Алеч — крупнейшего в Альпах.' },
-      { day: 6, title: 'Деревня Гриндельвальд', desc: 'Трек к деревне с видами на Северную стену Айгера.' },
-      { day: 7, title: 'Последний день', desc: 'Финальная прогулка, ужин.' },
-      { day: 8, title: 'Отъезд', desc: 'Трансфер в аэропорт.' },
-    ],
-    included: [
-      'Проживание',
-      'Полный пансион',
-      'Трансферы',
-      'Гид',
-      'Групповое страхование',
-    ],
-    notIncluded: [
-      'Авиабилеты',
-      'Личные напитки',
-      'Личное страхование',
-    ],
-  },
-  'corsica-october-2026': {
-    name: 'Треккинг на Корсике',
-    dates: '1–8 октября 2026',
-    price: '€1 090',
-    difficulty: 'Низкая',
-    image: '/tours/tour-corsica.png',
-    duration: '8 дней / 7 ночей',
-    groupSize: '8–12 человек',
-    accommodation: 'Гостевые дома',
-    season: 'апрель — октябрь',
-    program: [
-      { day: 1, title: 'Прибытие в Аяччо', desc: 'Встреча, трансфер в гостевой дом.' },
-      { day: 2, title: 'Побережье Каланк', desc: 'Трек вдоль скалистого побережья.' },
-      { day: 3, title: 'Долина Рестоника', desc: 'Переход через долину с кристально чистыми реками.' },
-      { day: 4, title: 'Горные деревни', desc: 'Посещение старинных корсиканских деревень.' },
-      { day: 5, title: 'Водопады и леса', desc: 'Трек через каштановые леса к водопадам.' },
-      { day: 6, title: 'Пляжный день', desc: 'Отдых на диком пляже, купание.' },
-      { day: 7, title: 'Последний трек', desc: 'Финальная прогулка, ужин.' },
-      { day: 8, title: 'Отъезд', desc: 'Трансфер в аэропорт.' },
-    ],
-    included: [
-      'Проживание',
-      'Завтраки',
-      'Трансферы',
-      'Гид',
-      'Групповое страхование',
-    ],
-    notIncluded: [
-      'Авиабилеты',
-      'Обеды и ужины',
-      'Личное страхование',
-    ],
-  },
-};
+interface TourData {
+  name: string;
+  dates: string;
+  price: string;
+  difficulty: string;
+  image: string;
+  duration: string;
+  group_size: string;
+  accommodation: string;
+  season: string;
+  program: { day: number; title: string; desc: string }[];
+  included: string[];
+  not_included: string[];
+}
 
 export default function TourDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [openDays, setOpenDays] = useState<number[]>([]);
+  const [tour, setTour] = useState<TourData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  const tour = slug ? tourData[slug] : null;
+  useEffect(() => {
+    if (!slug) return;
+    fetch(`/api/tours/${slug}`)
+      .then((r) => {
+        if (r.status === 404) { setNotFound(true); return null; }
+        return r.json();
+      })
+      .then((data) => {
+        if (data && !data.error) setTour(data);
+        else if (data?.error) setNotFound(true);
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
+  }, [slug]);
 
-  if (!tour) {
+  if (loading) {
+    return (
+      <div className="bg-background min-h-[calc(100vh-4rem)] flex items-center justify-center">
+        <p className="text-primary/40 text-lg font-medium">Загружаем тур...</p>
+      </div>
+    );
+  }
+
+  if (notFound || !tour) {
     return (
       <div className="bg-background min-h-[calc(100vh-4rem)] flex items-center justify-center">
         <p className="text-primary/40 text-lg font-medium">Тур не найден</p>
@@ -214,7 +64,7 @@ export default function TourDetail() {
 
   const infoItems = [
     { icon: '/icons/icon-clock.png', label: 'Длительность', value: tour.duration },
-    { icon: '/icons/icon-group.png', label: 'Группа', value: tour.groupSize },
+    { icon: '/icons/icon-group.png', label: 'Группа', value: tour.group_size },
     { icon: '/icons/icon-mountain.png', label: 'Сложность', value: tour.difficulty },
     { icon: '/icons/icon-bed.png', label: 'Жильё', value: tour.accommodation },
     { icon: '/icons/icon-calendar.png', label: 'Сезон', value: tour.season },
@@ -224,7 +74,7 @@ export default function TourDetail() {
     <div className="bg-background pb-24 md:pb-0">
       <Helmet>
         <title>{tour.name} — KIUR</title>
-        <meta name="description" content={`${tour.name}, ${tour.dates}. ${tour.duration}, группа ${tour.groupSize}. Стоимость ${tour.price}. Треккинг-тур с KIUR.`} />
+        <meta name="description" content={`${tour.name}, ${tour.dates}. ${tour.duration}, группа ${tour.group_size}. Стоимость ${tour.price}. Треккинг-тур с KIUR.`} />
         <meta property="og:title" content={`${tour.name} — KIUR`} />
         <meta property="og:description" content={`${tour.name}, ${tour.dates}. ${tour.duration}. Стоимость ${tour.price}.`} />
         <meta property="og:url" content={`https://kiurtours.eu/tours/${slug}`} />
@@ -328,7 +178,7 @@ export default function TourDetail() {
           <div className="bg-background border border-primary/10 rounded-card p-6">
             <h3 className="font-heading font-bold text-primary mb-4">Не включено</h3>
             <ul className="space-y-3">
-              {tour.notIncluded.map((item) => (
+              {tour.not_included.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm text-primary/80">
                   <X className="w-4 h-4 text-primary/40 shrink-0 mt-0.5" />
                   <span>{item}</span>

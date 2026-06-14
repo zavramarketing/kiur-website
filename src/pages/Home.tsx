@@ -1,34 +1,17 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { useState, useEffect } from 'react';
 import TourCard from '../components/TourCard';
 
-const upcomingTours = [
-  {
-    slug: 'dolomites-june-2026',
-    name: 'Доломитовые Альпы',
-    dates: '15–22 июня 2026',
-    price: '€1 290',
-    difficulty: 'Средняя',
-    image: '/tours/tour-dolomites.png',
-  },
-  {
-    slug: 'norway-july-2026',
-    name: 'Треккинг в Норвегии',
-    dates: '5–12 июля 2026',
-    price: '€1 490',
-    difficulty: 'Высокая',
-    image: '/tours/tour-norway.png',
-  },
-  {
-    slug: 'pyrenees-august-2026',
-    name: 'Пиренеи: Франция — Испания',
-    dates: '20–28 августа 2026',
-    price: '€1 190',
-    difficulty: 'Средняя',
-    image: '/tours/tour-pyrenees.png',
-  },
-];
+interface Tour {
+  slug: string;
+  name: string;
+  dates: string;
+  price: string;
+  difficulty: string;
+  image: string;
+}
 
 const steps = [
   {
@@ -49,6 +32,15 @@ const steps = [
 ];
 
 export default function Home() {
+  const [upcomingTours, setUpcomingTours] = useState<Tour[]>([]);
+
+  useEffect(() => {
+    fetch('/api/tours?limit=3')
+      .then((r) => r.json())
+      .then((data) => { if (Array.isArray(data)) setUpcomingTours(data.slice(0, 3)); })
+      .catch(console.error);
+  }, []);
+
   return (
     <div>
       <Helmet>
