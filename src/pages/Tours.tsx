@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import TourCard from '../components/TourCard';
 
@@ -18,56 +18,32 @@ const months = [
   'Декабрь',
 ];
 
-const allTours = [
-  {
-    slug: 'dolomites-june-2026',
-    name: 'Доломитовые Альпы',
-    dates: '15–22 июня 2026',
-    price: '€1 290',
-    difficulty: 'Средняя',
-    image: '/tours/tour-dolomites.png',
-  },
-  {
-    slug: 'norway-july-2026',
-    name: 'Треккинг в Норвегии',
-    dates: '5–12 июля 2026',
-    price: '€1 490',
-    difficulty: 'Высокая',
-    image: '/tours/tour-norway.png',
-  },
-  {
-    slug: 'pyrenees-august-2026',
-    name: 'Пиренеи: Франция — Испания',
-    dates: '20–28 августа 2026',
-    price: '€1 190',
-    difficulty: 'Средняя',
-    image: '/tours/tour-pyrenees.png',
-  },
-  {
-    slug: 'alps-september-2026',
-    name: 'Швейцарские Альпы',
-    dates: '10–17 сентября 2026',
-    price: '€1 390',
-    difficulty: 'Средняя',
-    image: '/tours/tour-alps.png',
-  },
-  {
-    slug: 'corsica-october-2026',
-    name: 'Треккинг на Корсике',
-    dates: '1–8 октября 2026',
-    price: '€1 090',
-    difficulty: 'Низкая',
-    image: '/tours/tour-corsica.png',
-  },
-];
+interface Tour {
+  slug: string;
+  name: string;
+  dates: string;
+  price: string;
+  difficulty: string;
+  image: string;
+}
 
 export default function Tours() {
   const [activeMonth, setActiveMonth] = useState('Все');
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/tours')
+      .then((r) => r.json())
+      .then((data) => { if (Array.isArray(data)) setTours(data); })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
 
   const filteredTours =
     activeMonth === 'Все'
-      ? allTours
-      : allTours.filter((t) => t.dates.includes(activeMonth.toLowerCase().slice(0, 3)));
+      ? tours
+      : tours.filter((t) => t.dates.toLowerCase().includes(activeMonth.toLowerCase().slice(0, 3)));
 
   return (
     <div className="bg-background min-h-[calc(100vh-4rem)] py-12 md:py-20">
@@ -101,7 +77,11 @@ export default function Tours() {
           ))}
         </div>
 
-        {filteredTours.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-20">
+            <p className="text-primary/40 text-lg font-medium">Загружаем туры...</p>
+          </div>
+        ) : filteredTours.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTours.map((tour) => (
               <TourCard key={tour.slug} {...tour} />
