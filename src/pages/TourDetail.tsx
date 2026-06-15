@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { ChevronDown, Check, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 interface TourData {
+  id: string;
   name: string;
   dates: string;
   price: string;
   difficulty: string;
+  difficulty_level: number;
   image: string;
   duration: string;
   group_size: string;
@@ -18,12 +20,291 @@ interface TourData {
   not_included: string[];
 }
 
+const EXPERIENCE_LABELS: Record<string, string> = {
+  never:        'Не ходил(а) в треккинги',
+  few_times:    '1–5 походов',
+  regularly:    'Регулярно хожу',
+  professional: 'Профессиональный уровень',
+}
+const FITNESS_LABELS: Record<string, string> = {
+  low:     'Низкая',
+  medium:  'Средняя',
+  high:    'Высокая',
+  athletic:'Спортивная',
+}
+const GROUP_LABELS: Record<string, string> = {
+  solo:      'Один / одна',
+  couple:    'Вдвоём',
+  friends:   'С друзьями',
+  family:    'С семьёй',
+  corporate: 'Корпоратив',
+}
+
+function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }) {
+  const [step, setStep] = useState<'info' | 'qualify' | 'done'>('info')
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [country, setCountry] = useState('')
+
+  const [experience, setExperience] = useState('')
+  const [fitness, setFitness] = useState('')
+  const [travelGroup, setTravelGroup] = useState('')
+  const [notes, setNotes] = useState('')
+
+  const [qualHint, setQualHint] = useState('')
+  const [qualLoading, setQualLoading] = useState(false)
+
+  const overlayRef = useRef<HTMLDivElement>(null)
+
+  // Close on backdrop click
+  const handleBackdrop = (e: React.MouseEvent) => {
+    if (e.target === overlayRef.current) onClose()
+  }
+
+  // Close on Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [onClose])
+
+  // Lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  // Real-time hint
+  useEffect(() => {
+    if (step !== 'qualify' || !experience || !fitness || !travelGroup) return
+    setQualLoading(true)
+    setQualHint('')
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/qualify-hint', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tourName: tour.name, difficulty: tour.difficulty_level, experience, fitness, travelGroup }),
+        })
+        const data = await res.json()
+        setQualHint(data.hint || '')
+      } catch { /* ignore */ }
+      finally { setQualLoading(false) }
+    }, 600)
+    return () => clearTimeout(t)
+  }, [experience, fitness, travelGroup, step])
+
+  function step1(e: React.FormEvent) {
+    e.preventDefault()
+    if (!name.trim() || !email.trim()) { setError('Заполните имя и email'); return }
+    setError('')
+    setStep('qualify')
+  }
+
+  async function step2(e: React.FormEvent) {
+    e.preventDefault()
+    setSubmitting(true)
+    setError('')
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tour: tour.id,
+          name, email, phone, country,
+          experience, fitness, travel_group: travelGroup, notes,
+          status: 'new',
+        }),
+      })
+      if (!res.ok) throw new Error('Ошибка сервера')
+      setStep('done')
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Ошибка при отправке')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <div
+      ref={overlayRef}
+      onClick={handleBackdrop}
+      className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+    >
+      <div className="bg-background w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-background border-b border-primary/10 px-6 py-4 flex items-center justify-between">
+          <div>
+            <p className="text-xs text-primary/50 uppercase tracking-widest font-medium">Заявка на тур</p>
+            <p className="font-heading font-bold text-primary text-sm mt-0.5 line-clamp-1">{tour.name}</p>
+          </div>
+          <button onClick={onClose} className="text-primary/40 hover:text-primary transition-colors p-1">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-6">
+          {step === 'done' ? (
+            <div className="py-8 text-center">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <Check className="w-7 h-7 text-primary" />
+              </div>
+              <h3 className="font-heading font-bold text-primary text-xl mb-2">Заявка принята!</h3>
+              <p className="text-primary/60 text-sm">
+                Мы напишем вам на <strong>{email}</strong> в течение 24 часов.
+              </p>
+              <button
+                onClick={onClose}
+                className="mt-6 bg-primary text-background px-8 py-2.5 rounded-full text-sm font-medium"
+              >
+                Закрыть
+              </button>
+            </div>
+          ) : (
+            <>
+              {/* Step indicator */}
+              <div className="flex items-center gap-2 mb-6">
+                {['Контакты', 'О себе'].map((label, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className={`w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center ${
+                      (i === 0 && step === 'info') || (i === 1 && step === 'qualify') ? 'bg-primary text-background'
+                      : i === 0 && step === 'qualify' ? 'bg-primary/70 text-background'
+                      : 'bg-primary/10 text-primary/40'
+                    }`}>
+                      {i === 0 && step === 'qualify' ? '✓' : i + 1}
+                    </div>
+                    <span className={`text-sm ${
+                      (i === 0 && step === 'info') || (i === 1 && step === 'qualify') ? 'font-medium text-primary' : 'text-primary/40'
+                    }`}>{label}</span>
+                    {i < 1 && <div className="w-8 h-px bg-primary/15 mx-1" />}
+                  </div>
+                ))}
+              </div>
+
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">{error}</div>
+              )}
+
+              {step === 'info' && (
+                <form onSubmit={step1} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-primary/70 mb-1.5">Имя и фамилия *</label>
+                    <input value={name} onChange={e => setName(e.target.value)} placeholder="Анна Смирнова"
+                      className="w-full border border-primary/20 rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-primary/70 mb-1.5">Email *</label>
+                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="anna@email.com"
+                      className="w-full border border-primary/20 rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-primary/70 mb-1.5">Телефон / WhatsApp</label>
+                    <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="+7 999 123-45-67"
+                      className="w-full border border-primary/20 rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-primary/70 mb-1.5">Страна</label>
+                    <input value={country} onChange={e => setCountry(e.target.value)} placeholder="Россия, Германия..."
+                      className="w-full border border-primary/20 rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20" />
+                  </div>
+                  <button type="submit" className="w-full bg-primary text-background py-3 rounded-full font-medium hover:opacity-90 transition-opacity">
+                    Далее →
+                  </button>
+                </form>
+              )}
+
+              {step === 'qualify' && (
+                <form onSubmit={step2} className="space-y-5">
+                  <div>
+                    <label className="block text-sm font-medium text-primary/70 mb-2">Опыт треккинга</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {Object.entries(EXPERIENCE_LABELS).map(([val, label]) => (
+                        <label key={val} className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-colors ${
+                          experience === val ? 'border-primary bg-accent' : 'border-primary/15 bg-white hover:border-primary/30'
+                        }`}>
+                          <input type="radio" name="exp" value={val} checked={experience === val} onChange={() => setExperience(val)} className="accent-primary" />
+                          <span className="text-xs text-primary">{label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-primary/70 mb-2">Физическая форма</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {Object.entries(FITNESS_LABELS).map(([val, label]) => (
+                        <label key={val} className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-colors ${
+                          fitness === val ? 'border-primary bg-accent' : 'border-primary/15 bg-white hover:border-primary/30'
+                        }`}>
+                          <input type="radio" name="fit" value={val} checked={fitness === val} onChange={() => setFitness(val)} className="accent-primary" />
+                          <span className="text-xs text-primary">{label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-primary/70 mb-2">Едете</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {Object.entries(GROUP_LABELS).map(([val, label]) => (
+                        <label key={val} className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-colors ${
+                          travelGroup === val ? 'border-primary bg-accent' : 'border-primary/15 bg-white hover:border-primary/30'
+                        }`}>
+                          <input type="radio" name="grp" value={val} checked={travelGroup === val} onChange={() => setTravelGroup(val)} className="accent-primary" />
+                          <span className="text-xs text-primary">{label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {(qualLoading || qualHint) && (
+                    <div className={`p-4 rounded-xl text-sm border ${
+                      qualLoading ? 'bg-accent border-primary/15 text-primary/50'
+                      : qualHint.toLowerCase().includes('отлично') || qualHint.toLowerCase().includes('подходит') ? 'bg-green-50 border-green-200 text-green-800'
+                      : qualHint.toLowerCase().includes('уточнить') ? 'bg-yellow-50 border-yellow-200 text-yellow-800'
+                      : 'bg-orange-50 border-orange-200 text-orange-800'
+                    }`}>
+                      {qualLoading ? 'Оцениваем подходящесть маршрута...' : qualHint}
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-sm font-medium text-primary/70 mb-1.5">Вопросы или пожелания</label>
+                    <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={2}
+                      placeholder="Что важно учесть? Есть ли ограничения по здоровью?"
+                      className="w-full border border-primary/20 rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 resize-none" />
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button type="button" onClick={() => setStep('info')}
+                      className="flex-1 border border-primary/20 text-primary/60 py-3 rounded-full text-sm font-medium hover:bg-accent transition-colors">
+                      ← Назад
+                    </button>
+                    <button type="submit" disabled={submitting}
+                      className="flex-1 bg-primary text-background py-3 rounded-full font-medium hover:opacity-90 transition-opacity disabled:opacity-50">
+                      {submitting ? 'Отправляем...' : 'Отправить заявку'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function TourDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [openDays, setOpenDays] = useState<number[]>([]);
   const [tour, setTour] = useState<TourData | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
@@ -163,7 +444,7 @@ export default function TourDetail() {
         </div>
 
         {/* Included / Not included */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-10">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-10 mb-10 md:mb-14">
           <div className="bg-background border border-primary/10 rounded-card p-6">
             <h3 className="font-heading font-bold text-primary mb-4">Включено в стоимость</h3>
             <ul className="space-y-3">
@@ -187,6 +468,20 @@ export default function TourDetail() {
             </ul>
           </div>
         </div>
+
+        {/* Desktop CTA */}
+        <div className="hidden md:flex items-center justify-between bg-primary rounded-2xl px-10 py-8">
+          <div>
+            <p className="font-heading font-bold text-background text-2xl mb-1">Готовы отправиться в путь?</p>
+            <p className="text-background/70 text-sm">{tour.dates} · {tour.duration} · от {tour.price}</p>
+          </div>
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-background text-primary px-8 py-3.5 rounded-full font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
+          >
+            Записаться на тур
+          </button>
+        </div>
       </div>
 
       {/* Sticky bottom bar on mobile */}
@@ -195,15 +490,15 @@ export default function TourDetail() {
           <div className="text-xs text-primary/50">Стоимость</div>
           <div className="font-heading font-bold text-primary text-lg">{tour.price}</div>
         </div>
-        <a
-          href="https://t.me/kiur_tours"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => setShowModal(true)}
           className="bg-primary text-background px-6 py-2.5 rounded-full text-sm font-medium"
         >
-          Забронировать
-        </a>
+          Записаться
+        </button>
       </div>
+
+      {showModal && <BookingModal tour={tour} onClose={() => setShowModal(false)} />}
     </div>
   );
 }
