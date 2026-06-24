@@ -129,7 +129,7 @@ export default function Terms() {
           </section>
 
           <section>
-            <h2 className="font-heading text-lg font-bold text-primary mb-3">10. Применимое право и споры</html>
+            <h2 className="font-heading text-lg font-bold text-primary mb-3">10. Применимое право и споры</h2>
             <p>
               Настоящие условия регулируются законодательством Европейского Союза. Стороны стремятся
               разрешать споры путём переговоров. При невозможности достичь согласия спор передаётся
