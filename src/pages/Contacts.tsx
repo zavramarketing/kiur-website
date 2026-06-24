@@ -2,24 +2,29 @@ import { useState } from 'react';
 import { Send, MessageCircle, Instagram, Mail, Check } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
+declare const gtag: (command: string, action: string, params?: Record<string, unknown>) => void;
+
 const contactBlocks = [
   {
     icon: MessageCircle,
     label: 'Telegram',
     value: '@kiurtour_bot',
     href: 'https://t.me/kiurtour_bot',
+    gaEvent: 'telegram_click',
   },
   {
     icon: Instagram,
     label: 'Instagram',
     value: '@kiur.trekking',
     href: 'https://instagram.com/kiur.trekking',
+    gaEvent: null,
   },
   {
     icon: Mail,
     label: 'Email',
     value: 'hello@kiur.travel',
     href: 'mailto:hello@kiur.travel',
+    gaEvent: null,
   },
 ];
 
@@ -40,6 +45,7 @@ export default function Contacts() {
       if (!res.ok) throw new Error();
       setSent(true);
       setForm({ name: '', email: '', message: '' });
+      gtag('event', 'generate_lead', { source: 'contact_form' });
       setTimeout(() => setSent(false), 4000);
     } catch {
       setError('Не удалось отправить сообщение. Попробуй ещё раз или напиши нам напрямую.');
@@ -68,6 +74,7 @@ export default function Contacts() {
               href={block.href}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => block.gaEvent && gtag('event', block.gaEvent)}
               className="bg-background border border-primary/10 rounded-card p-6 text-center hover:border-primary/30 hover:shadow-sm transition-all duration-300"
             >
               <div className="w-12 h-12 mx-auto mb-4 bg-accent/40 rounded-full flex items-center justify-center">

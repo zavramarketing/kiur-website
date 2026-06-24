@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { ChevronDown, Check, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
+declare const gtag: (command: string, action: string, params?: Record<string, unknown>) => void;
+
 interface TourData {
   id: string;
   name: string;
@@ -60,25 +62,21 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
 
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  // Close on backdrop click
   const handleBackdrop = (e: React.MouseEvent) => {
     if (e.target === overlayRef.current) onClose()
   }
 
-  // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [onClose])
 
-  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = '' }
   }, [])
 
-  // Real-time hint
   useEffect(() => {
     if (step !== 'qualify' || !experience || !fitness || !travelGroup) return
     setQualLoading(true)
@@ -122,6 +120,7 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
       })
       if (!res.ok) throw new Error('Ошибка сервера')
       setStep('done')
+      gtag('event', 'generate_lead', { tour_name: tour.name, source: 'booking_form' });
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Ошибка при отправке')
     } finally {
@@ -165,7 +164,6 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
             </div>
           ) : (
             <>
-              {/* Step indicator */}
               <div className="flex items-center gap-2 mb-6">
                 {['Контакты', 'О себе'].map((label, i) => (
                   <div key={i} className="flex items-center gap-2">
@@ -343,6 +341,11 @@ export default function TourDetail() {
     );
   };
 
+  const openBooking = () => {
+    setShowModal(true);
+    gtag('event', 'begin_checkout', { tour_name: tour.name });
+  };
+
   const infoItems = [
     { icon: '/icons/icon-clock.png', label: 'Длительность', value: tour.duration },
     { icon: '/icons/icon-group.png', label: 'Группа', value: tour.group_size },
@@ -476,7 +479,7 @@ export default function TourDetail() {
             <p className="text-background/70 text-sm">{tour.dates} · {tour.duration} · от {tour.price}</p>
           </div>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={openBooking}
             className="bg-background text-primary px-8 py-3.5 rounded-full font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
           >
             Записаться на тур
@@ -491,7 +494,7 @@ export default function TourDetail() {
           <div className="font-heading font-bold text-primary text-lg">{tour.price}</div>
         </div>
         <button
-          onClick={() => setShowModal(true)}
+          onClick={openBooking}
           className="bg-primary text-background px-6 py-2.5 rounded-full text-sm font-medium"
         >
           Записаться
