@@ -6,6 +6,11 @@ const footerLinks = [
   { to: '/contacts', label: 'Контакты' },
 ];
 
+const legalLinks = [
+  { to: '/privacy', label: 'Конфиденциальность' },
+  { to: '/terms', label: 'Условия участия' },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-primary text-background py-10">
@@ -21,6 +26,18 @@ export default function Footer() {
                 key={link.to}
                 to={link.to}
                 className="text-background/70 hover:text-background text-sm transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-4">
+            {legalLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-background/40 hover:text-background/70 text-xs transition-colors"
               >
                 {link.label}
               </Link>

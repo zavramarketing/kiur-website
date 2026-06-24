@@ -7,6 +7,8 @@ import TourDetail from './pages/TourDetail';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Contacts from './pages/Contacts';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contacts" element={<Contacts />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
         </Routes>
       </main>
       <Footer />
