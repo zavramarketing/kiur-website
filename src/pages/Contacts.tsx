@@ -6,8 +6,8 @@ const contactBlocks = [
   {
     icon: MessageCircle,
     label: 'Telegram',
-    value: '@kiur_tours',
-    href: 'https://t.me/kiur_tours',
+    value: '@kiurtour_bot',
+    href: 'https://t.me/kiurtour_bot',
   },
   {
     icon: Instagram,
