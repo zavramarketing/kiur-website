@@ -17,6 +17,7 @@ interface TourData {
   group_size: string;
   accommodation: string;
   season: string;
+  region?: string;
   program: { day: number; title: string; desc: string }[];
   included: string[];
   not_included: string[];
@@ -346,6 +347,28 @@ export default function TourDetail() {
     gtag('event', 'begin_checkout', { tour_name: tour.name });
   };
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: tour.name,
+    description: `${tour.name}. ${tour.duration}, группа ${tour.group_size}. Даты: ${tour.dates}. Сложность: ${tour.difficulty}.`,
+    touristType: ['Треккинг', 'Пешеходный туризм'],
+    ...(tour.image ? { image: tour.image } : {}),
+    ...(tour.region ? { itinerary: { '@type': 'ItemList', name: tour.region } } : {}),
+    offers: {
+      '@type': 'Offer',
+      price: tour.price.replace(/[^\d]/g, '') || tour.price,
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      url: `https://kiurtours.eu/tours/${slug}`,
+    },
+    provider: {
+      '@type': 'TravelAgency',
+      name: 'KIUR',
+      url: 'https://kiurtours.eu',
+    },
+  };
+
   const infoItems = [
     { icon: '/icons/icon-clock.png', label: 'Длительность', value: tour.duration },
     { icon: '/icons/icon-group.png', label: 'Группа', value: tour.group_size },
@@ -362,7 +385,9 @@ export default function TourDetail() {
         <meta property="og:title" content={`${tour.name} — KIUR`} />
         <meta property="og:description" content={`${tour.name}, ${tour.dates}. ${tour.duration}. Стоимость ${tour.price}.`} />
         <meta property="og:url" content={`https://kiurtours.eu/tours/${slug}`} />
+        {tour.image && <meta property="og:image" content={tour.image} />}
         <link rel="canonical" href={`https://kiurtours.eu/tours/${slug}`} />
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
       {/* Hero */}
       <div className="relative h-72 md:h-[28rem] bg-accent/30 flex items-end">
