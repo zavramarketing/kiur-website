@@ -26,14 +26,24 @@ const contactBlocks = [
 export default function Contacts() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => {
-      setSent(false);
+    setError('');
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
+      setSent(true);
       setForm({ name: '', email: '', message: '' });
-    }, 3000);
+      setTimeout(() => setSent(false), 4000);
+    } catch {
+      setError('Не удалось отправить сообщение. Попробуй ещё раз или напиши нам напрямую.');
+    }
   };
 
   return (
@@ -117,6 +127,9 @@ export default function Contacts() {
                 placeholder="Расскажи о своих планах или задай вопрос..."
               />
             </div>
+            {error && (
+              <p className="text-red-600 text-sm">{error}</p>
+            )}
             <button
               type="submit"
               disabled={sent}
