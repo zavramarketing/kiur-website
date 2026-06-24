@@ -191,7 +191,7 @@ export default function Home() {
               Напишите нам в Telegram. Мы на связи, чтобы быстро подсказать детали по снаряжению, сложности или помочь выбрать подходящий тур.
             </p>
             <a
-              href="https://t.me/kiur_tours"
+              href="https://t.me/kiurtour_bot"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-primary text-background px-7 py-3 rounded-full font-medium hover:bg-primary/90 transition-colors"
