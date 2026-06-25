@@ -11,6 +11,10 @@ const legalLinks = [
   { to: '/terms', label: 'Условия участия' },
 ];
 
+function openCookieSettings() {
+  window.dispatchEvent(new Event('open-cookie-settings'));
+}
+
 export default function Footer() {
   return (
     <footer className="bg-primary text-background py-10">
@@ -42,6 +46,12 @@ export default function Footer() {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={openCookieSettings}
+              className="text-background/40 hover:text-background/70 text-xs transition-colors"
+            >
+              Настройки куки
+            </button>
           </div>
 
           <p className="text-background/50 text-sm">© KIUR 2026</p>

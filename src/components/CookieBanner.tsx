@@ -25,6 +25,10 @@ export default function CookieBanner() {
     } else if (!stored) {
       setVisible(true);
     }
+
+    const onOpen = () => setVisible(true);
+    window.addEventListener('open-cookie-settings', onOpen);
+    return () => window.removeEventListener('open-cookie-settings', onOpen);
   }, []);
 
   function accept() {
