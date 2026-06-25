@@ -15,7 +15,7 @@ const articles = [
     slug: 'dolomites-guide',
     title: 'Доломиты: гид для первого посещения',
     date: '28 апреля 2026',
-    image: undefined,
+    image: '/blog/dolomites-guide.jpg',
     excerpt:
       'Всё, что нужно знать о Доломитовых Альпах: лучшие маршруты, сезоны, где жить и что есть.',
   },
