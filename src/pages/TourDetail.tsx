@@ -322,7 +322,7 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-primary/70 mb-1.5">Страна</label>
-                    <input value={country} onChange={e => setCountry(e.target.value)} placeholder="Россия, Германия..."
+                    <input value={country} onChange={e => setCountry(e.target.value)} placeholder="Эстония, Германия..."
                       className="w-full border border-primary/20 rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20" />
                   </div>
                   <button type="submit" className="w-full bg-primary text-background py-3 rounded-full font-medium hover:opacity-90 transition-opacity">
