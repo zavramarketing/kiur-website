@@ -40,6 +40,7 @@ export default async function handler(req, res) {
       program: t.program || [],
       included: t.included || [],
       not_included: t.not_included || [],
+      reviews: t.reviews || [],
     })
   } catch (err) {
     console.error('Tour detail API error:', err)
