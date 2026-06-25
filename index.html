@@ -16,14 +16,21 @@
     <meta name="twitter:title" content="KIUR — Пешие треккинг-туры по Европе" />
     <meta name="twitter:description" content="Организованные треккинг-туры по самым красивым местам Европы. Русскоязычные группы, всё включено." />
     <meta name="twitter:image" content="https://kiurtours.eu/og-image-v2.png" />
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S32PKH00XT"></script>
+    <!-- Google Analytics with Consent Mode v2 -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500,
+      });
       gtag('js', new Date());
-      gtag('config', 'G-S32PKH00XT');
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S32PKH00XT"></script>
+    <script>gtag('config', 'G-S32PKH00XT');</script>
   </head>
   <body>
     <div id="root"></div>
