@@ -23,7 +23,7 @@ const articles = [
     slug: 'trekking-for-beginners',
     title: 'Треккинг для начинающих: как пойти в первый поход и получить удовольствие',
     date: '15 апреля 2026',
-    image: undefined,
+    image: '/blog/trekking-for-beginners.jpg',
     excerpt:
       'Никогда не ходил в походы? Рассказываем, как подготовиться к первому треккингу, что купить и как тренироваться.',
   },
