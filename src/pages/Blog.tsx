@@ -13,7 +13,7 @@ const articles = [
   },
   {
     slug: 'dolomites-guide',
-    title: 'Доломиты: гид для первого посещения',
+    title: 'Доломитовые Альпы: полный гайд для первого путешествия',
     date: '28 апреля 2026',
     image: '/blog/dolomites-guide.jpg',
     excerpt:
