@@ -606,11 +606,6 @@ export default function TourDetail() {
           </div>
         </div>
 
-        {/* Reviews */}
-        {tour.reviews && tour.reviews.length > 0 && (
-          <ReviewsCarousel reviews={tour.reviews} />
-        )}
-
         {/* Included / Not included */}
         <div className="grid md:grid-cols-2 gap-6 md:gap-10 mb-10 md:mb-14">
           <div className="bg-background border border-primary/10 rounded-card p-6">
@@ -637,8 +632,27 @@ export default function TourDetail() {
           </div>
         </div>
 
+        {/* Reviews */}
+        {tour.reviews && tour.reviews.length > 0 && (
+          <ReviewsCarousel reviews={tour.reviews} />
+        )}
+
+        {/* Desktop CTA */}
+        <div className="hidden md:flex items-center justify-between bg-primary rounded-2xl px-10 py-8">
+          <div>
+            <p className="font-heading font-bold text-background text-2xl mb-1">Готовы отправиться в путь?</p>
+            <p className="text-background/70 text-sm">{tour.dates} · {tour.duration} · от {tour.price}</p>
+          </div>
+          <button
+            onClick={openBooking}
+            className="bg-background text-primary px-8 py-3.5 rounded-full font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
+          >
+            Записаться на тур
+          </button>
+        </div>
+
         {/* Suggest a destination */}
-        <div className="bg-background border border-primary/10 rounded-card p-6 md:p-8 mb-10 md:mb-14">
+        <div className="bg-background border border-primary/10 rounded-card p-6 md:p-8 mt-10 md:mt-14">
           <h3 className="font-heading font-bold text-primary text-lg mb-1">Предложите следующий маршрут</h3>
           <p className="text-primary/60 text-sm mb-5">Куда ещё хотели бы пойти? Мы учитываем пожелания при планировании новых туров.</p>
           {suggestionSent ? (
@@ -662,20 +676,6 @@ export default function TourDetail() {
               </button>
             </div>
           )}
-        </div>
-
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center justify-between bg-primary rounded-2xl px-10 py-8">
-          <div>
-            <p className="font-heading font-bold text-background text-2xl mb-1">Готовы отправиться в путь?</p>
-            <p className="text-background/70 text-sm">{tour.dates} · {tour.duration} · от {tour.price}</p>
-          </div>
-          <button
-            onClick={openBooking}
-            className="bg-background text-primary px-8 py-3.5 rounded-full font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
-          >
-            Записаться на тур
-          </button>
         </div>
       </div>
 
