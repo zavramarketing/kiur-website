@@ -317,7 +317,7 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-primary/70 mb-1.5">Телефон / WhatsApp</label>
-                    <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="+7 999 123-45-67"
+                    <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="+372 5123 4567"
                       className="w-full border border-primary/20 rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20" />
                   </div>
                   <div>
