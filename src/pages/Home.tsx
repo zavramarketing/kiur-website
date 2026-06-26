@@ -162,7 +162,7 @@ export default function Home() {
             {steps.map((step, i) => (
               <div key={i} className="text-center">
                 <div className="w-14 h-14 mx-auto mb-5 bg-background/10 rounded-full flex items-center justify-center">
-                  <img src={step.icon} alt="" className="w-12 h-12 object-contain" />
+                  <img src={step.icon} alt={step.title} className="w-12 h-12 object-contain" />
                 </div>
                 <div className="text-accent font-heading font-bold text-sm mb-2">
                   Шаг {i + 1}
