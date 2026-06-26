@@ -22,9 +22,18 @@ export default async function handler(req, res) {
     const filter = encodeURIComponent('published=true')
     const url = `${PB_URL}/api/collections/tours/records?filter=${filter}&perPage=200&fields=slug,updated`
 
-    const response = await fetch(url)
-    const data = response.ok ? await response.json() : { items: [] }
-    const tours = data.items || []
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 5000)
+    let tours = []
+    try {
+      const response = await fetch(url, { signal: controller.signal })
+      const data = response.ok ? await response.json() : {}
+      tours = data.items || []
+    } catch {
+      tours = []
+    } finally {
+      clearTimeout(timeout)
+    }
 
     const staticUrls = STATIC_PAGES.map(
       ({ loc, priority, changefreq }) =>
@@ -55,6 +64,14 @@ export default async function handler(req, res) {
     res.status(200).send(xml)
   } catch (err) {
     console.error('Sitemap error:', err)
-    res.status(500).send('<?xml version="1.0"?><error/>')
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8')
+    res.status(200).send([
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      STATIC_PAGES.map(({ loc, priority, changefreq }) =>
+        `  <url>\n    <loc>${SITE}${loc}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`
+      ).join('\n'),
+      '</urlset>',
+    ].join('\n'))
   }
 }
