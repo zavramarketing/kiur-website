@@ -41,11 +41,36 @@ export default function Home() {
       .catch(console.error);
   }, []);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'TravelAgency',
+        '@id': 'https://kiurtours.eu/#organization',
+        name: 'KIUR',
+        url: 'https://kiurtours.eu',
+        logo: 'https://kiurtours.eu/mascot/kiur-map.png',
+        description: 'Организованные треккинг-туры по самым красивым местам Европы: Доломиты, Норвегия, Пиренеи, Альпы, Корсика. Туры на русском языке, всё включено.',
+        areaServed: 'Europe',
+        contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', url: 'https://t.me/kiurtour_bot' },
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://kiurtours.eu/#website',
+        url: 'https://kiurtours.eu',
+        name: 'KIUR',
+        publisher: { '@id': 'https://kiurtours.eu/#organization' },
+        inLanguage: 'ru',
+      },
+    ],
+  };
+
   return (
     <div>
       <Helmet>
         <title>KIUR — Пешие треккинг-туры по Европе</title>
         <link rel="canonical" href="https://kiurtours.eu" />
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
       {/* Hero */}
       <section className="relative bg-primary text-background pt-12 pb-0 md:pt-28 overflow-visible">
