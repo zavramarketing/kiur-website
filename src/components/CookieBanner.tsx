@@ -89,9 +89,9 @@ export default function CookieBanner() {
         </div>
 
         <div className="px-6 py-5 space-y-4">
-          <p className="text-sm text-primary/60 leading-relaxed">
+          <p className="text-sm text-primary/80 leading-relaxed">
             Мы используем cookies для работы сайта и анализа посещаемости. Вы можете выбрать, какие категории разрешить.{' '}
-            <Link to="/privacy" onClick={declineAll} className="underline underline-offset-2 hover:text-primary transition-colors">
+            <Link to="/privacy" onClick={declineAll} className="underline underline-offset-2 text-primary hover:text-primary transition-colors">
               Политика конфиденциальности
             </Link>
           </p>
@@ -115,7 +115,7 @@ export default function CookieBanner() {
           <div className="flex items-start justify-between gap-4 py-4 border-t border-primary/10">
             <div>
               <div className="text-sm font-medium text-primary">Аналитика</div>
-              <div className="text-xs text-primary/70 mt-0.5 leading-relaxed">
+              <div className="text-xs text-primary/90 mt-0.5 leading-relaxed">
                 Google Analytics — помогает нам понять, как вы используете сайт, и улучшать его.
               </div>
             </div>
