@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: 'Предложение маршрута',
-        email: 'suggestion@kiurtours.eu',
+        email: 'marketing@zavra.eu',
         notes: [
           req.body.destination,
           req.body.source_tour ? `(тур: ${req.body.source_tour})` : null,
