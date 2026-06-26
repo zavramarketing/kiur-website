@@ -3,18 +3,18 @@ const PB_URL = process.env.PB_URL || 'http://204.168.190.225/pb'
 const SITE = 'https://kiurtours.eu'
 
 const STATIC_PAGES = [
-  { loc: '/', priority: '1.0', changefreq: 'weekly' },
-  { loc: '/tours', priority: '0.9', changefreq: 'weekly' },
-  { loc: '/blog', priority: '0.7', changefreq: 'weekly' },
-  { loc: '/blog/what-to-pack', priority: '0.7', changefreq: 'monthly' },
-  { loc: '/blog/dolomites-guide', priority: '0.7', changefreq: 'monthly' },
-  { loc: '/blog/trekking-for-beginners', priority: '0.7', changefreq: 'monthly' },
-  { loc: '/blog/norway-fjords', priority: '0.7', changefreq: 'monthly' },
-  { loc: '/blog/group-vs-solo', priority: '0.7', changefreq: 'monthly' },
-  { loc: '/blog/mountain-food', priority: '0.7', changefreq: 'monthly' },
-  { loc: '/contacts', priority: '0.6', changefreq: 'monthly' },
-  { loc: '/privacy', priority: '0.3', changefreq: 'yearly' },
-  { loc: '/terms', priority: '0.3', changefreq: 'yearly' },
+  { loc: '/', lastmod: '2026-06-26', priority: '1.0', changefreq: 'weekly' },
+  { loc: '/tours', lastmod: '2026-06-26', priority: '0.9', changefreq: 'weekly' },
+  { loc: '/blog', lastmod: '2026-06-26', priority: '0.7', changefreq: 'weekly' },
+  { loc: '/blog/what-to-pack', lastmod: '2026-06-25', priority: '0.7', changefreq: 'monthly' },
+  { loc: '/blog/dolomites-guide', lastmod: '2026-06-25', priority: '0.7', changefreq: 'monthly' },
+  { loc: '/blog/trekking-for-beginners', lastmod: '2026-06-25', priority: '0.7', changefreq: 'monthly' },
+  { loc: '/blog/norway-fjords', lastmod: '2026-06-26', priority: '0.7', changefreq: 'monthly' },
+  { loc: '/blog/group-vs-solo', lastmod: '2026-06-26', priority: '0.7', changefreq: 'monthly' },
+  { loc: '/blog/mountain-food', lastmod: '2026-06-26', priority: '0.7', changefreq: 'monthly' },
+  { loc: '/contacts', lastmod: '2026-06-25', priority: '0.6', changefreq: 'monthly' },
+  { loc: '/privacy', lastmod: '2026-06-01', priority: '0.3', changefreq: 'yearly' },
+  { loc: '/terms', lastmod: '2026-06-01', priority: '0.3', changefreq: 'yearly' },
 ]
 
 export default async function handler(req, res) {
@@ -36,8 +36,8 @@ export default async function handler(req, res) {
     }
 
     const staticUrls = STATIC_PAGES.map(
-      ({ loc, priority, changefreq }) =>
-        `  <url>\n    <loc>${SITE}${loc}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`
+      ({ loc, lastmod, priority, changefreq }) =>
+        `  <url>\n    <loc>${SITE}${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`
     ).join('\n')
 
     const tourUrls = tours
