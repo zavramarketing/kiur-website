@@ -12,7 +12,10 @@ export default async function handler(req, res) {
     const response = await fetch(`${PB_URL}/api/collections/leads/records`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...req.body, type: 'suggestion' }),
+      body: JSON.stringify({
+        suggestions: req.body.destination,
+        notes: req.body.source_tour ? `Предложение с тура: ${req.body.source_tour}` : undefined,
+      }),
     })
     const data = await response.json()
     if (!response.ok) return res.status(response.status).json(data)
