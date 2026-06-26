@@ -45,10 +45,6 @@ export default function Home() {
     <div>
       <Helmet>
         <title>KIUR — Пешие треккинг-туры по Европе</title>
-        <meta name="description" content="Организованные треккинг-туры по самым красивым местам Европы: Доломиты, Норвегия, Пиренеи, Альпы, Корсика. Туры на русском языке, всё включено." />
-        <meta property="og:title" content="KIUR — Пешие треккинг-туры по Европе" />
-        <meta property="og:description" content="Организованные треккинг-туры по самым красивым местам Европы. Туры на русском языке, всё включено." />
-        <meta property="og:url" content="https://kiurtours.eu" />
         <link rel="canonical" href="https://kiurtours.eu" />
       </Helmet>
       {/* Hero */}
