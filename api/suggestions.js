@@ -15,8 +15,10 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         name: 'Предложение маршрута',
         email: 'suggestion@kiurtours.eu',
-        suggestions: req.body.destination,
-        notes: req.body.source_tour ? `Тур: ${req.body.source_tour}` : undefined,
+        notes: [
+          req.body.destination,
+          req.body.source_tour ? `(тур: ${req.body.source_tour})` : null,
+        ].filter(Boolean).join(' '),
       }),
     })
     const data = await response.json()
