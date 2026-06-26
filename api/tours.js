@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       price: t.price,
       difficulty: t.difficulty,
       difficulty_level: t.difficulty_level,
-      image: t.image_url || '',
+      image: t.image_url ? `/api/img?url=${encodeURIComponent(t.image_url)}` : '',
       duration: t.duration,
       group_size: t.group_size,
       accommodation: t.accommodation,
