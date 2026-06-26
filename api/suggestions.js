@@ -9,10 +9,10 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
   try {
-    const response = await fetch(`${PB_URL}/api/collections/suggestions/records`, {
+    const response = await fetch(`${PB_URL}/api/collections/leads/records`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify({ ...req.body, type: 'suggestion' }),
     })
     const data = await response.json()
     if (!response.ok) return res.status(response.status).json(data)
