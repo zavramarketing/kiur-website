@@ -13,8 +13,10 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        name: 'Предложение маршрута',
+        email: 'suggestion@kiurtours.eu',
         suggestions: req.body.destination,
-        notes: req.body.source_tour ? `Предложение с тура: ${req.body.source_tour}` : undefined,
+        notes: req.body.source_tour ? `Тур: ${req.body.source_tour}` : undefined,
       }),
     })
     const data = await response.json()
