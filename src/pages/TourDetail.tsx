@@ -420,6 +420,25 @@ export default function TourDetail() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [suggestion, setSuggestion] = useState('');
+  const [suggestionSent, setSuggestionSent] = useState(false);
+  const [suggestionLoading, setSuggestionLoading] = useState(false);
+
+  const submitSuggestion = async () => {
+    const text = suggestion.trim();
+    if (!text) return;
+    setSuggestionLoading(true);
+    try {
+      await fetch('/api/suggestions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ destination: text, source_tour: slug }),
+      });
+      setSuggestionSent(true);
+    } finally {
+      setSuggestionLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!slug) return;
@@ -616,6 +635,33 @@ export default function TourDetail() {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* Suggest a destination */}
+        <div className="bg-background border border-primary/10 rounded-card p-6 md:p-8 mb-10 md:mb-14">
+          <h3 className="font-heading font-bold text-primary text-lg mb-1">Предложите следующий маршрут</h3>
+          <p className="text-primary/60 text-sm mb-5">Куда ещё хотели бы пойти? Мы учитываем пожелания при планировании новых туров.</p>
+          {suggestionSent ? (
+            <p className="text-primary font-medium text-sm">Спасибо! Мы записали ваше пожелание.</p>
+          ) : (
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={suggestion}
+                onChange={(e) => setSuggestion(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && submitSuggestion()}
+                placeholder="Например: Черногория, Триглав, Патагония..."
+                className="flex-1 border border-primary/20 rounded-full px-4 py-2.5 text-sm text-primary placeholder:text-primary/30 bg-background focus:outline-none focus:border-primary/50"
+              />
+              <button
+                onClick={submitSuggestion}
+                disabled={suggestionLoading || !suggestion.trim()}
+                className="bg-primary text-background px-6 py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 whitespace-nowrap"
+              >
+                {suggestionLoading ? '...' : 'Предложить'}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Desktop CTA */}
