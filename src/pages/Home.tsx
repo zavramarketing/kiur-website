@@ -103,6 +103,9 @@ export default function Home() {
           <img
             src="/mascot/kiur-map.png"
             alt="KIUR with map"
+            width="600"
+            height="680"
+            loading="lazy"
             className="hidden md:block absolute bottom-0 right-[-60px] w-[600px] object-contain translate-y-[15%] z-10"
           />
         </div>
@@ -117,6 +120,9 @@ export default function Home() {
               <img
                 src="/mascot/kiur-hiking.png"
                 alt="KIUR mascot"
+                width="460"
+                height="520"
+                fetchPriority="high"
                 className="w-[260px] md:w-[460px] object-contain mb-[-40px] md:mb-[-60px] relative z-10"
               />
             </div>
@@ -204,6 +210,9 @@ export default function Home() {
               <img
                 src="/mascot/kiur-phone.png"
                 alt="KIUR phone"
+                width="380"
+                height="480"
+                loading="lazy"
                 className="w-full object-contain"
               />
               <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#F5F0E8] to-transparent" />

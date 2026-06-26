@@ -83,7 +83,7 @@ export default function CookieBanner() {
 
         <div className="flex items-center justify-between px-6 py-4 border-b border-primary/10">
           <h2 className="font-heading font-bold text-primary text-base">Настройки cookies</h2>
-          <button onClick={declineAll} className="text-primary/30 hover:text-primary/60 transition-colors p-1">
+          <button onClick={declineAll} aria-label="Закрыть" className="text-primary/30 hover:text-primary/60 transition-colors p-1">
             <X className="w-4 h-4" />
           </button>
         </div>

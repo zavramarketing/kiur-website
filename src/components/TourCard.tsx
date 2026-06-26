@@ -15,7 +15,7 @@ export default function TourCard({ slug, name, dates, price, difficulty, image }
     <div className="bg-white rounded-card shadow-sm border border-primary/5 overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col">
       <div className="h-48 bg-accent/40 flex items-center justify-center relative">
         {image ? (
-          <img src={image} alt={name} className="w-full h-full object-cover" />
+          <img src={image} alt={name} width="400" height="192" loading="lazy" className="w-full h-full object-cover" />
         ) : (
           <div className="text-primary/30 text-sm font-medium">Изображение тура</div>
         )}

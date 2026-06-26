@@ -89,6 +89,7 @@ function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             <button
               onClick={() => scrollTo(Math.max(0, active - 1))}
               disabled={active === 0}
+              aria-label="Предыдущий отзыв"
               className="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center text-primary/60 hover:bg-accent disabled:opacity-25 transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -96,6 +97,7 @@ function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             <button
               onClick={() => scrollTo(Math.min(reviews.length - 1, active + 1))}
               disabled={active === reviews.length - 1}
+              aria-label="Следующий отзыв"
               className="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center text-primary/60 hover:bg-accent disabled:opacity-25 transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
@@ -257,7 +259,7 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
             <p className="text-xs text-primary/50 uppercase tracking-widest font-medium">Заявка на тур</p>
             <p className="font-heading font-bold text-primary text-sm mt-0.5 line-clamp-1">{tour.name}</p>
           </div>
-          <button onClick={onClose} className="text-primary/40 hover:text-primary transition-colors p-1">
+          <button onClick={onClose} aria-label="Закрыть" className="text-primary/40 hover:text-primary transition-colors p-1">
             <X className="w-5 h-5" />
           </button>
         </div>
