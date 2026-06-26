@@ -507,11 +507,11 @@ export default function TourDetail() {
   };
 
   const infoItems = [
-    { icon: '/icons/icon-clock.png', label: 'Длительность', value: tour.duration },
-    { icon: '/icons/icon-group.png', label: 'Группа', value: tour.group_size },
-    { icon: '/icons/icon-mountain.png', label: 'Сложность', value: tour.difficulty },
-    { icon: '/icons/icon-bed.png', label: 'Жильё', value: tour.accommodation },
-    { icon: '/icons/icon-calendar.png', label: 'Сезон', value: tour.season },
+    { icon: '/icons/icon-clock.webp', label: 'Длительность', value: tour.duration },
+    { icon: '/icons/icon-group.webp', label: 'Группа', value: tour.group_size },
+    { icon: '/icons/icon-mountain.webp', label: 'Сложность', value: tour.difficulty },
+    { icon: '/icons/icon-bed.webp', label: 'Жильё', value: tour.accommodation },
+    { icon: '/icons/icon-calendar.webp', label: 'Сезон', value: tour.season },
   ];
 
   return (

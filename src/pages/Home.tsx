@@ -15,17 +15,17 @@ interface Tour {
 
 const steps = [
   {
-    icon: '/icons/icon-compass.png',
+    icon: '/icons/icon-compass.webp',
     title: 'Выбираете маршрут',
     desc: 'Посмотрите наши туры по пейзажным местам Европы и найдите то, что вам ближе всего по настроению и уровню нагрузки.',
   },
   {
-    icon: '/icons/icon-calendar.png',
+    icon: '/icons/icon-calendar.webp',
     title: 'Бронируете место',
     desc: 'Оставьте заявку на сайте. Мы свяжемся с вами, ответим на вопросы и поможем оформить бронирование.',
   },
   {
-    icon: '/icons/icon-peaks.png',
+    icon: '/icons/icon-peaks.webp',
     title: 'Приезжаете и отдыхаете',
     desc: 'Мы берем на себя проживание, маршруты и сопровождение. Вы просто наслаждаетесь путешествием.',
   },
@@ -49,7 +49,7 @@ export default function Home() {
         '@id': 'https://kiurtours.eu/#organization',
         name: 'KIUR',
         url: 'https://kiurtours.eu',
-        logo: 'https://kiurtours.eu/mascot/kiur-map.png',
+        logo: 'https://kiurtours.eu/logo.webp',
         description: 'Организованные треккинг-туры по самым красивым местам Европы: Доломиты, Норвегия, Пиренеи, Альпы, Корсика. Туры на русском языке, всё включено.',
         areaServed: 'Europe',
         contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', url: 'https://t.me/kiurtour_bot' },
@@ -101,7 +101,7 @@ export default function Home() {
             </div>
           </div>
           <img
-            src="/mascot/kiur-map.png"
+            src="/mascot/kiur-map.webp"
             alt="KIUR with map"
             width="600"
             height="680"
@@ -118,7 +118,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8 items-end">
             <div className="flex items-end justify-center md:justify-start">
               <img
-                src="/mascot/kiur-hiking.png"
+                src="/mascot/kiur-hiking.webp"
                 alt="KIUR mascot"
                 width="460"
                 height="520"
@@ -208,7 +208,7 @@ export default function Home() {
           <div className="flex flex-col items-center">
             <div className="relative max-w-[240px] md:max-w-[380px] w-full mb-4 md:mb-6">
               <img
-                src="/mascot/kiur-phone.png"
+                src="/mascot/kiur-phone.webp"
                 alt="KIUR phone"
                 width="380"
                 height="480"
@@ -220,7 +220,7 @@ export default function Home() {
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary mb-6">
               Остались вопросы?
             </h2>
-            <p className="text-primary/60 mb-8 max-w-md mx-auto">
+            <p className="text-primary/80 mb-8 max-w-md mx-auto">
               Напишите нам в Telegram. Мы на связи, чтобы быстро подсказать детали по снаряжению, сложности или помочь выбрать подходящий тур.
             </p>
             <a

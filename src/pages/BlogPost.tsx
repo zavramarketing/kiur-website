@@ -323,7 +323,7 @@ export default function BlogPost() {
     datePublished: post.datePublished,
     dateModified: post.datePublished,
     author: { '@type': 'Organization', name: 'KIUR', url: 'https://kiurtours.eu' },
-    publisher: { '@type': 'Organization', name: 'KIUR', logo: { '@type': 'ImageObject', url: 'https://kiurtours.eu/mascot/kiur-map.png' } },
+    publisher: { '@type': 'Organization', name: 'KIUR', logo: { '@type': 'ImageObject', url: 'https://kiurtours.eu/logo.webp' } },
     url: `https://kiurtours.eu/blog/${slug}`,
     ...(post.image ? { image: `https://kiurtours.eu${post.image}` } : {}),
     mainEntityOfPage: { '@type': 'WebPage', '@id': `https://kiurtours.eu/blog/${slug}` },

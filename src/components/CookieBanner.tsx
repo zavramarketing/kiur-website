@@ -115,13 +115,14 @@ export default function CookieBanner() {
           <div className="flex items-start justify-between gap-4 py-4 border-t border-primary/10">
             <div>
               <div className="text-sm font-medium text-primary">Аналитика</div>
-              <div className="text-xs text-primary/50 mt-0.5 leading-relaxed">
+              <div className="text-xs text-primary/70 mt-0.5 leading-relaxed">
                 Google Analytics — помогает нам понять, как вы используете сайт, и улучшать его.
               </div>
             </div>
             <button
               role="switch"
               aria-checked={analytics}
+              aria-label="Аналитика"
               onClick={() => setAnalytics(v => !v)}
               className={`shrink-0 mt-0.5 w-10 h-5 rounded-full transition-colors duration-200 flex items-center px-0.5 ${analytics ? 'bg-primary justify-end' : 'bg-primary/20 justify-start'}`}
             >
@@ -133,7 +134,7 @@ export default function CookieBanner() {
         <div className="px-6 pb-6 flex flex-col sm:flex-row gap-2">
           <button
             onClick={declineAll}
-            className="flex-1 border border-primary/20 text-primary/60 text-sm py-2.5 rounded-full hover:bg-accent transition-colors"
+            className="flex-1 border border-primary/20 text-primary/80 text-sm py-2.5 rounded-full hover:bg-accent transition-colors"
           >
             Отклонить все
           </button>

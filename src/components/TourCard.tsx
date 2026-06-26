@@ -15,7 +15,7 @@ export default function TourCard({ slug, name, dates, price, difficulty, image }
     <div className="bg-white rounded-card shadow-sm border border-primary/5 overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col">
       <div className="h-48 bg-accent/40 flex items-center justify-center relative">
         {image ? (
-          <img src={image} alt={name} width="400" height="192" loading="lazy" className="w-full h-full object-cover" />
+          <img src={image} alt={name} width="400" height="192" className="w-full h-full object-cover" />
         ) : (
           <div className="text-primary/30 text-sm font-medium">Изображение тура</div>
         )}
@@ -27,8 +27,8 @@ export default function TourCard({ slug, name, dates, price, difficulty, image }
       <div className="p-5 flex flex-col flex-1">
         <h3 className="font-heading font-semibold text-primary text-lg mb-2">{name}</h3>
 
-        <div className="flex items-center gap-1.5 text-primary/60 text-sm mb-3">
-          <img src="/icons/icon-clock.png" alt="Даты" className="w-5 h-5 object-contain" />
+        <div className="flex items-center gap-1.5 text-primary/80 text-sm mb-3">
+          <img src="/icons/icon-clock.webp" alt="Даты" className="w-5 h-5 object-contain" />
           <span>{dates}</span>
         </div>
 
