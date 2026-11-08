@@ -1,6 +1,8 @@
 const SITE = 'https://kiurtours.eu'
 const KEY = '56843e721d764beabccacee992eb1fc5'
-const PB_URL = process.env.PB_URL || 'http://204.168.190.225/pb'
+import { pocketbaseUrl } from './_lib/pocketbase.js'
+
+const PB_URL = pocketbaseUrl()
 
 const STATIC_URLS = [
   `${SITE}/`,
@@ -17,6 +19,7 @@ const STATIC_URLS = [
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  if (!PB_URL) return res.status(503).json({ error: 'Service unavailable' })
 
   try {
     const controller = new AbortController()

@@ -1,7 +1,10 @@
-const PB_URL = process.env.PB_URL || 'http://204.168.190.225/pb'
+import { pocketbaseUrl } from './_lib/pocketbase.js'
+
+const PB_URL = pocketbaseUrl()
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
+  if (!PB_URL) return res.status(503).json({ error: 'Service unavailable' })
 
   try {
     const limit = req.query.limit || 200

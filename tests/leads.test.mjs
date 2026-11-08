@@ -3,7 +3,13 @@
 // the backend's answer. No network: fetch is replaced.
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { clientIp, createRateLimiter, originAllowed, parseAllowedOrigins, validateLead } from '../api/_lib/leads.js'
+// Required configuration of the function (test values, not real ones).
+process.env.PB_URL = 'https://pb.example.test'
+process.env.PB_API_KEY = 'test-key'
+
+import { clientIp, createRateLimiter, originAllowed, parseAllowedOrigins, validateLead, validateSuggestion } from '../api/_lib/leads.js'
+import { pocketbaseUrl, pocketbaseWriteConfig } from '../api/_lib/pocketbase.js'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 
 const contact = { name: 'Anna', email: 'anna@example.com', message: 'Hello' }
 const booking = { tour: 'dolomites', name: 'Anna', email: 'anna@example.com', phone: '+372 5555', country: 'EE', experience: 'some', fitness: 'good', travel_group: 'friends', notes: '', status: 'new' }
@@ -107,7 +113,7 @@ test('handler: a valid lead is stored and only { ok: true } goes back', async ()
   assert.equal(res.statusCode, 200)
   assert.deepEqual(res.payload, { ok: true })
   assert.equal(sent.length, 1)
-  assert.match(sent[0].url, /\/api\/collections\/leads\/records$/)
+  assert.match(sent[0].url, /^https:\/\/.*\/api\/collections\/leads\/records$/)
   assert.deepEqual(sent[0].body, contact)
   assert.equal(res.headers['Access-Control-Allow-Origin'], undefined)
 })
@@ -144,14 +150,85 @@ test('handler: the same address is limited', async () => {
   assert.deepEqual(codes, [200, 200, 200, 200, 200, 429, 429])
 })
 
-test('handler: the backend key is sent only when configured', async () => {
-  const without = await call()
-  assert.equal(without.sent[0].headers['X-Leads-Key'], undefined)
-  process.env.PB_API_KEY = 'k-test'
+test('handler: the https backend address and the key are always used', async () => {
+  const { sent } = await call()
+  assert.equal(sent[0].url, 'https://pb.example.test/api/collections/leads/records')
+  assert.equal(sent[0].headers['X-Leads-Key'], 'test-key')
+  assert.equal(sent[0].headers['Content-Type'], 'application/json')
+})
+
+test('handler: without an https PB_URL or without PB_API_KEY nothing is sent (no fallback)', async () => {
+  const saved = { url: process.env.PB_URL, key: process.env.PB_API_KEY }
   try {
-    const withKey = await call()
-    assert.equal(withKey.sent[0].headers['X-Leads-Key'], 'k-test')
+    for (const [url, key] of [[undefined, 'k'], ['http://pb.example.test', 'k'], ['https://pb.example.test', undefined], ['', '']]) {
+      if (url === undefined) delete process.env.PB_URL; else process.env.PB_URL = url
+      if (key === undefined) delete process.env.PB_API_KEY; else process.env.PB_API_KEY = key
+      const { res, sent } = await call()
+      assert.equal(res.statusCode, 503)
+      assert.deepEqual(res.payload, { error: 'Service unavailable' })
+      assert.equal(sent.length, 0)
+    }
   } finally {
-    delete process.env.PB_API_KEY
+    process.env.PB_URL = saved.url
+    process.env.PB_API_KEY = saved.key
+  }
+})
+
+// ----------------------------------------------- suggestions and configuration
+test('suggestion validation: text destination required, tour slug well-formed', () => {
+  assert.deepEqual(validateSuggestion({ destination: ' Tatras ', source_tour: 'dolomites-7' }), { ok: true, destination: 'Tatras', sourceTour: 'dolomites-7' })
+  assert.deepEqual(validateSuggestion({ destination: 'Tatras' }), { ok: true, destination: 'Tatras', sourceTour: undefined })
+  for (const [body, error] of [[undefined, 'invalid_body'], [{}, 'destination_required'], [{ destination: { a: 1 } }, 'destination_required'], [{ destination: 'x'.repeat(301) }, 'too_long_destination'], [{ destination: 'Tatras', source_tour: '../x' }, 'invalid_source_tour'], [{ destination: 'Tatras', source_tour: 5 }, 'invalid_source_tour']]) {
+    assert.deepEqual(validateSuggestion(body), { ok: false, error })
+  }
+})
+
+test('PocketBase settings: https only, key required for writes, no default address', () => {
+  assert.equal(pocketbaseUrl({}), null)
+  assert.equal(pocketbaseUrl({ PB_URL: 'http://pb.example.test' }), null)
+  assert.equal(pocketbaseUrl({ PB_URL: ' https://pb.example.test/ ' }), 'https://pb.example.test')
+  assert.equal(pocketbaseWriteConfig({ PB_URL: 'https://pb.example.test' }), null)
+  assert.deepEqual(pocketbaseWriteConfig({ PB_URL: 'https://pb.example.test', PB_API_KEY: 'k' }), { url: 'https://pb.example.test', key: 'k' })
+})
+
+const { default: suggestions } = await import('../api/suggestions.js')
+
+async function callSuggestions({ body = { destination: 'Tatras', source_tour: 'dolomites' }, headers = {}, method = 'POST' } = {}) {
+  const sent = []
+  const original = globalThis.fetch
+  globalThis.fetch = async (url, init) => { sent.push({ url, headers: init.headers, body: JSON.parse(init.body) }); return new Response('{}', { status: 200 }) }
+  const res = { headers: {}, statusCode: 0, payload: undefined }
+  res.setHeader = (k, v) => { res.headers[k] = v }
+  res.status = (c) => { res.statusCode = c; return res }
+  res.json = (p) => { res.payload = p; return res }
+  const req = { method, headers: { origin: 'https://kiurtours.eu', host: 'kiurtours.eu', 'content-type': 'application/json', 'x-forwarded-for': `10.1.0.${Math.floor(Math.random() * 250)}`, ...headers }, body }
+  try { await suggestions(req, res) } finally { globalThis.fetch = original }
+  return { res, sent }
+}
+
+test('suggestions: guarded like the lead form, key and https always used, visitor text only in notes', async () => {
+  const ok = await callSuggestions()
+  assert.equal(ok.res.statusCode, 200)
+  assert.deepEqual(ok.res.payload, { ok: true })
+  assert.equal(ok.sent[0].url, 'https://pb.example.test/api/collections/leads/records')
+  assert.equal(ok.sent[0].headers['X-Leads-Key'], 'test-key')
+  assert.deepEqual(Object.keys(ok.sent[0].body).sort(), ['email', 'name', 'notes'])
+  assert.equal(ok.sent[0].body.notes, 'Tatras (тур: dolomites)')
+  for (const [opts, status] of [[{ method: 'GET' }, 405], [{ headers: { origin: 'https://evil.example' } }, 403], [{ headers: { 'content-type': 'text/plain' } }, 415], [{ body: null }, 400], [{ body: { destination: 7 } }, 400]]) {
+    const r = await callSuggestions(opts)
+    assert.equal(r.res.statusCode, status)
+    assert.equal(r.sent.length, 0)
+  }
+})
+
+test('no function in api/ carries a plain-http fallback or an IP address', () => {
+  const files = []
+  const walk = (dir) => { for (const name of readdirSync(dir)) { const p = `${dir}/${name}`; statSync(p).isDirectory() ? walk(p) : files.push(p) } }
+  walk(new URL('../api', import.meta.url).pathname)
+  for (const f of files.filter((f) => f.endsWith('.js'))) {
+    const text = readFileSync(f, 'utf8')
+    assert.doesNotMatch(text, /\|\|\s*['"]http:\/\//, `${f}: plain-http fallback address`)
+    // 127.0.0.1 is only the local-development origin in the origin check.
+    assert.doesNotMatch(text.replaceAll('127.0.0.1', ''), /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/, `${f}: IP address`)
   }
 })

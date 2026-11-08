@@ -91,3 +91,17 @@ export function clientIp(headers) {
   const forwarded = String(headers['x-forwarded-for'] || '').split(',')[0].trim()
   return forwarded || String(headers['x-real-ip'] || 'unknown')
 }
+
+/** Route suggestion: a destination text and, optionally, the slug of the tour it was made on. */
+export function validateSuggestion(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { ok: false, error: 'invalid_body' }
+  const destination = typeof body.destination === 'string' ? body.destination.trim() : ''
+  if (destination.length < 2) return { ok: false, error: 'destination_required' }
+  if (destination.length > 300) return { ok: false, error: 'too_long_destination' }
+  let sourceTour
+  if (body.source_tour !== undefined && body.source_tour !== null && body.source_tour !== '') {
+    if (typeof body.source_tour !== 'string' || !/^[a-z0-9][a-z0-9-]{0,99}$/i.test(body.source_tour)) return { ok: false, error: 'invalid_source_tour' }
+    sourceTour = body.source_tour
+  }
+  return { ok: true, destination, sourceTour }
+}
