@@ -175,6 +175,7 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
   const [fitness, setFitness] = useState('')
   const [travelGroup, setTravelGroup] = useState('')
   const [notes, setNotes] = useState('')
+  const [website, setWebsite] = useState('') // spam trap, see api/leads.js
 
   const [qualHint, setQualHint] = useState('')
   const [qualLoading, setQualLoading] = useState(false)
@@ -235,6 +236,7 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
           name, email, phone, country,
           experience, fitness, travel_group: travelGroup, notes,
           status: 'new',
+          company_website: website,
         }),
       })
       if (!res.ok) throw new Error('Ошибка сервера')
@@ -335,6 +337,16 @@ function BookingModal({ tour, onClose }: { tour: TourData; onClose: () => void }
 
               {step === 'qualify' && (
                 <form onSubmit={step2} className="space-y-5">
+                  <input
+                    type="text"
+                    name="company_website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                  />
                   <div>
                     <label className="block text-sm font-medium text-primary/70 mb-2">Опыт треккинга</label>
                     <div className="grid grid-cols-2 gap-2">
