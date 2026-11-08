@@ -55,7 +55,11 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(`${pbUrl}/api/collections/leads/records`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      // With PB_API_KEY set, PocketBase can refuse any create that does not carry
+      // this key (collection rule: @request.headers.x_leads_key = "<same value>").
+      // Without it the address in this public repository accepts anyone's POST,
+      // validation here included.
+      headers: { 'Content-Type': 'application/json', ...(process.env.PB_API_KEY ? { 'X-Leads-Key': process.env.PB_API_KEY } : {}) },
       body: JSON.stringify(result.record),
     })
     if (!response.ok) {

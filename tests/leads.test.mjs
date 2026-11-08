@@ -87,7 +87,7 @@ function call({ method = 'POST', headers = {}, body = contact, backend } = {}) {
   const sent = []
   const originalFetch = globalThis.fetch
   globalThis.fetch = async (url, init) => {
-    sent.push({ url, body: JSON.parse(init.body) })
+    sent.push({ url, body: JSON.parse(init.body), headers: init.headers })
     return backend ? backend() : new Response(JSON.stringify({ id: 'secret-internal-id' }), { status: 200 })
   }
   const res = { headers: {}, statusCode: 0, payload: undefined }
@@ -142,4 +142,16 @@ test('handler: the same address is limited', async () => {
   const codes = []
   for (let i = 0; i < 7; i++) codes.push((await call({ headers })).res.statusCode)
   assert.deepEqual(codes, [200, 200, 200, 200, 200, 429, 429])
+})
+
+test('handler: the backend key is sent only when configured', async () => {
+  const without = await call()
+  assert.equal(without.sent[0].headers['X-Leads-Key'], undefined)
+  process.env.PB_API_KEY = 'k-test'
+  try {
+    const withKey = await call()
+    assert.equal(withKey.sent[0].headers['X-Leads-Key'], 'k-test')
+  } finally {
+    delete process.env.PB_API_KEY
+  }
 })
