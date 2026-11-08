@@ -1,4 +1,6 @@
-const PB_URL = process.env.PB_URL || 'http://204.168.190.225/pb'
+import { pocketbaseUrl } from './_lib/pocketbase.js'
+
+const PB_URL = pocketbaseUrl()
 
 const SITE = 'https://kiurtours.eu'
 
@@ -19,6 +21,8 @@ const STATIC_PAGES = [
 
 export default async function handler(req, res) {
   try {
+    // Without a configured https PocketBase the static sitemap below is served.
+    if (!PB_URL) throw new Error('PB_URL is not an https address')
     const filter = encodeURIComponent('published=true')
     const url = `${PB_URL}/api/collections/tours/records?filter=${filter}&perPage=200&fields=slug,updated`
 

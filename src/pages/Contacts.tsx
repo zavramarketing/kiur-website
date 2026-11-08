@@ -29,7 +29,7 @@ const contactBlocks = [
 ];
 
 export default function Contacts() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', message: '', company_website: '' });
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
 
@@ -44,7 +44,7 @@ export default function Contacts() {
       });
       if (!res.ok) throw new Error();
       setSent(true);
-      setForm({ name: '', email: '', message: '' });
+      setForm({ name: '', email: '', message: '', company_website: '' });
       gtag('event', 'generate_lead', { source: 'contact_form' });
       setTimeout(() => setSent(false), 4000);
     } catch {
@@ -92,6 +92,17 @@ export default function Contacts() {
             Напиши нам
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Spam trap: hidden from people, filled in by simple bots. */}
+            <input
+              type="text"
+              name="company_website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={form.company_website}
+              onChange={(e) => setForm({ ...form, company_website: e.target.value })}
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-primary/70 mb-1.5">
                 Имя

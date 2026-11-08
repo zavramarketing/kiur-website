@@ -1,24 +1,54 @@
-const PB_URL = process.env.PB_URL || 'http://204.168.190.225/pb'
+import { checkPostRequest } from './_lib/guard.js'
+import { createRateLimiter, validateLead } from './_lib/leads.js'
+import { pocketbaseWriteConfig } from './_lib/pocketbase.js'
+
+// Where leads are stored (PocketBase). Both settings are required, there is no
+// fallback: without them the function answers 503 and sends nothing.
+//   PB_URL      https address of PocketBase (no plain http)
+//   PB_API_KEY  secret the PocketBase `leads` create rule checks (docs/leads-backend.md)
+// Set them in the Vercel project's environment, never in the repository.
+
+const allow = createRateLimiter({ limit: 5, windowMs: 60_000 })
+
+function reply(res, status, body, headers = {}) {
+  res.setHeader('Cache-Control', 'no-store')
+  for (const [k, v] of Object.entries(headers)) res.setHeader(k, v)
+  return res.status(status).json(body)
+}
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  const refused = checkPostRequest(req, allow)
+  if (refused) return reply(res, refused.status, refused.body, refused.headers)
 
-  if (req.method === 'OPTIONS') return res.status(200).end()
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  const result = validateLead(req.body)
+  if (!result.ok) return reply(res, 400, { error: result.error })
+
+  // Bots that fill the hidden field get the same answer as a real sender and
+  // nothing is stored, so they learn nothing.
+  if (result.spam) return reply(res, 200, { ok: true })
+
+  const pb = pocketbaseWriteConfig()
+  if (!pb) {
+    console.error('Leads API: PB_URL must be an https address and PB_API_KEY must be set; lead not sent')
+    return reply(res, 503, { error: 'Service unavailable' })
+  }
 
   try {
-    const response = await fetch(`${PB_URL}/api/collections/leads/records`, {
+    const response = await fetch(`${pb.url}/api/collections/leads/records`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body),
+      // PocketBase refuses a create without this key, so posting to it directly
+      // cannot bypass the checks above.
+      headers: { 'Content-Type': 'application/json', 'X-Leads-Key': pb.key },
+      body: JSON.stringify(result.record),
     })
-    const data = await response.json()
-    if (!response.ok) return res.status(response.status).json(data)
-    res.status(200).json(data)
+    if (!response.ok) {
+      // The backend's answer can contain internal details: log it, do not forward it.
+      console.error('Leads API: backend answered', response.status)
+      return reply(res, 502, { error: 'Не удалось отправить заявку' })
+    }
+    return reply(res, 200, { ok: true })
   } catch (err) {
     console.error('Leads API error:', err)
-    res.status(500).json({ error: 'Не удалось отправить заявку' })
+    return reply(res, 500, { error: 'Не удалось отправить заявку' })
   }
 }
